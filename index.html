@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +9,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        html {
+            height: 100%;
+        }
         body {
             font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+        }
+        main {
+            flex-grow: 1;
         }
         .textarea-input {
             width: 100%;
-            height: 250px; /* Increased height */
+            height: 250px;
             padding: 1rem;
             border-radius: 0.5rem;
             border: 1px solid #D1D5DB;
             font-family: monospace;
             font-size: 0.875rem;
-            line-height: 1.5; /* Improved line spacing */
+            line-height: 1.5;
             color: #1F2937;
             background-color: #F9FAFB;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -107,7 +116,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-12">
+    <footer class="bg-gray-800 text-white mt-auto">
         <div class="container mx-auto px-6 py-8 text-center">
             <p>&copy; 2024 Language Learning Website Generator. Created with Gemini.</p>
         </div>
@@ -115,8 +124,9 @@
 
     <script>
     // --- TEMPLATES FOR THE GENERATED HTML FILES ---
+    // This section contains the functions that build the HTML files.
+    // It is kept in a separate script block to ensure it's not rendered as text.
 
-    // Template for index.html
     const mainTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
@@ -199,7 +209,6 @@
 </body>
 </html>`;
 
-    // Template for alphabet.html
     const alphabetTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
@@ -330,7 +339,6 @@
 </body>
 </html>`;
 
-    // Template for vocabulary.html
     const vocabularyTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
@@ -447,7 +455,6 @@
 </body>
 </html>`;
 
-    // Template for lessons.html
     const lessonsTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
@@ -563,9 +570,13 @@
 </body>
 </html>`;
 
-    // --- EXAMPLE DATA ---
-    const examples = {
-        mainData: `{
+    // --- SCRIPT FOR PAGE LOGIC ---
+    // This script block handles the core functionality of the generator page.
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- EXAMPLE DATA ---
+        const examples = {
+            mainData: `{
   "lang": "en",
   "title": "Learn MyLanguage - Complete Guide",
   "header": {
@@ -585,7 +596,7 @@
     "text": "&copy; 2024 Learn MyLanguage - Created by You!"
   }
 }`,
-        alphabetData: `{
+            alphabetData: `{
     "lang": "en",
     "title": "The MyLanguage Alphabet",
     "pageTitle": "The MyLanguage Alphabet",
@@ -602,7 +613,7 @@
     ],
     "footerText": "Guide to learning the MyLanguage alphabet."
 }`,
-        vocabularyData: `{
+            vocabularyData: `{
     "lang": "en",
     "title": "MyLanguage Vocabulary",
     "header": { "title": "MyLanguage Vocabulary" },
@@ -617,7 +628,7 @@
         { "term": "Poyezd", "pronunciation": "po-yezd", "translation": "Train", "categories": ["travel"], "nuance": "Refers to a long-distance train." }
     ]
 }`,
-        lessonsData: `{
+            lessonsData: `{
     "lang": "en",
     "title": "MyLanguage Lessons",
     "header": { "title": "MyLanguage Lessons Program" },
@@ -652,16 +663,14 @@
         }
     ]
 }`
-    };
-    
-    document.addEventListener('DOMContentLoaded', () => {
+        };
+        
         // Pre-fill textareas with example data
-        document.getElementById('mainData').value = examples.mainData.trim();
-        document.getElementById('alphabetData').value = examples.alphabetData.trim();
-        document.getElementById('vocabularyData').value = examples.vocabularyData.trim();
-        document.getElementById('lessonsData').value = examples.lessonsData.trim();
+        document.getElementById('mainData').value = JSON.stringify(JSON.parse(examples.mainData), null, 2);
+        document.getElementById('alphabetData').value = JSON.stringify(JSON.parse(examples.alphabetData), null, 2);
+        document.getElementById('vocabularyData').value = JSON.stringify(JSON.parse(examples.vocabularyData), null, 2);
+        document.getElementById('lessonsData').value = JSON.stringify(JSON.parse(examples.lessonsData), null, 2);
     });
-
 
     function generateWebsite() {
         const outputDiv = document.getElementById('output');
