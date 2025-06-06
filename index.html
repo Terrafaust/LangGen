@@ -123,15 +123,13 @@
     </footer>
 
     <script>
-    // --- TEMPLATES AND LOGIC SCRIPT ---
+    // This script block is placed at the end of the body to ensure all HTML elements are loaded before it runs.
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // This single script block contains all the necessary functions and data.
-    // It runs after the main HTML body has been loaded, preventing rendering issues.
+        // --- SECTION 1: HTML TEMPLATE FUNCTIONS ---
+        // These functions take a data object and return the full HTML for a page.
 
-    // SECTION 1: HTML TEMPLATE FUNCTIONS
-    // These functions take a data object and return the full HTML for a page.
-
-    const mainTemplate = (data) => `
+        const mainTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
 <head>
@@ -213,7 +211,7 @@
 </body>
 </html>`;
 
-    const alphabetTemplate = (data) => `
+        const alphabetTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
 <head>
@@ -343,7 +341,7 @@
 </body>
 </html>`;
 
-    const vocabularyTemplate = (data) => `
+        const vocabularyTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
 <head>
@@ -459,7 +457,7 @@
 </body>
 </html>`;
 
-    const lessonsTemplate = (data) => `
+        const lessonsTemplate = (data) => `
 <!DOCTYPE html>
 <html lang="${data.lang || 'en'}">
 <head>
@@ -574,10 +572,10 @@
 </body>
 </html>`;
 
-    // SECTION 2: EXAMPLE DATA
-    // This object holds the example JSON data for each page.
-    const examples = {
-        mainData: `{
+        // --- SECTION 2: EXAMPLE DATA ---
+        // This object holds the example JSON data for each page.
+        const examples = {
+            mainData: `{
   "lang": "en",
   "title": "Learn MyLanguage - Complete Guide",
   "header": {
@@ -597,7 +595,7 @@
     "text": "&copy; 2024 Learn MyLanguage - Created by You!"
   }
 }`,
-        alphabetData: `{
+            alphabetData: `{
     "lang": "en",
     "title": "The MyLanguage Alphabet",
     "pageTitle": "The MyLanguage Alphabet",
@@ -614,7 +612,7 @@
     ],
     "footerText": "Guide to learning the MyLanguage alphabet."
 }`,
-        vocabularyData: `{
+            vocabularyData: `{
     "lang": "en",
     "title": "MyLanguage Vocabulary",
     "header": { "title": "MyLanguage Vocabulary" },
@@ -629,7 +627,7 @@
         { "term": "Poyezd", "pronunciation": "po-yezd", "translation": "Train", "categories": ["travel"], "nuance": "Refers to a long-distance train." }
     ]
 }`,
-        lessonsData: `{
+            lessonsData: `{
     "lang": "en",
     "title": "MyLanguage Lessons",
     "header": { "title": "MyLanguage Lessons Program" },
@@ -664,63 +662,62 @@
         }
     ]
 }`
-    };
-    
-    // SECTION 3: PAGE INITIALIZATION
-    // This function populates the textareas with the example data.
-    // It's called directly to avoid timing issues.
-    function initializePage() {
-        // Pre-fill textareas with nicely formatted example data
-        document.getElementById('mainData').value = JSON.stringify(JSON.parse(examples.mainData), null, 2);
-        document.getElementById('alphabetData').value = JSON.stringify(JSON.parse(examples.alphabetData), null, 2);
-        document.getElementById('vocabularyData').value = JSON.stringify(JSON.parse(examples.vocabularyData), null, 2);
-        document.getElementById('lessonsData').value = JSON.stringify(JSON.parse(examples.lessonsData), null, 2);
-    }
-    
-    // Call the initialization function as soon as the script loads.
-    initializePage();
-
-
-    // SECTION 4: WEBSITE GENERATION FUNCTION
-    // This function is called when the "Generate" button is clicked.
-    function generateWebsite() {
-        const outputDiv = document.getElementById('output');
-        const errorDiv = document.getElementById('error');
-        outputDiv.innerHTML = '';
-        errorDiv.innerHTML = '';
-
-        try {
-            // Parse data from textareas
-            const mainData = JSON.parse(document.getElementById('mainData').value);
-            const alphabetData = JSON.parse(document.getElementById('alphabetData').value);
-            const vocabularyData = JSON.parse(document.getElementById('vocabularyData').value);
-            const lessonsData = JSON.parse(document.getElementById('lessonsData').value);
-
-            // Generate HTML content from templates
-            const files = {
-                'index.html': mainTemplate(mainData),
-                'alphabet.html': alphabetTemplate(alphabetData),
-                'vocabulary.html': vocabularyTemplate(vocabularyData),
-                'lessons.html': lessonsTemplate(lessonsData)
-            };
-
-            // Create and display download links
-            for (const [filename, content] of Object.entries(files)) {
-                const blob = new Blob([content], { type: 'text/html' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                a.textContent = `Download ${filename}`;
-                a.className = 'generated-link mx-2 my-2';
-                outputDiv.appendChild(a);
-            }
-
-        } catch (e) {
-            console.error(e);
-            errorDiv.textContent = 'Error: Could not generate files. Please ensure your data is in the correct JSON format in all four text boxes. Error details: ' + e.message;
+        };
+        
+        // --- SECTION 3: PAGE INITIALIZATION ---
+        // This function populates the textareas with the example data.
+        function initializePage() {
+            document.getElementById('mainData').value = JSON.stringify(JSON.parse(examples.mainData), null, 2);
+            document.getElementById('alphabetData').value = JSON.stringify(JSON.parse(examples.alphabetData), null, 2);
+            document.getElementById('vocabularyData').value = JSON.stringify(JSON.parse(examples.vocabularyData), null, 2);
+            document.getElementById('lessonsData').value = JSON.stringify(JSON.parse(examples.lessonsData), null, 2);
         }
-    }
+        
+        // Call the initialization function.
+        initializePage();
+
+
+        // --- SECTION 4: WEBSITE GENERATION ---
+        // This function is attached to the button's onclick event.
+        window.generateWebsite = function() {
+            const outputDiv = document.getElementById('output');
+            const errorDiv = document.getElementById('error');
+            outputDiv.innerHTML = '';
+            errorDiv.innerHTML = '';
+
+            try {
+                // Parse data from textareas
+                const mainData = JSON.parse(document.getElementById('mainData').value);
+                const alphabetData = JSON.parse(document.getElementById('alphabetData').value);
+                const vocabularyData = JSON.parse(document.getElementById('vocabularyData').value);
+                const lessonsData = JSON.parse(document.getElementById('lessonsData').value);
+
+                // Generate HTML content from templates
+                const files = {
+                    'index.html': mainTemplate(mainData),
+                    'alphabet.html': alphabetTemplate(alphabetData),
+                    'vocabulary.html': vocabularyTemplate(vocabularyData),
+                    'lessons.html': lessonsTemplate(lessonsData)
+                };
+
+                // Create and display download links
+                for (const [filename, content] of Object.entries(files)) {
+                    const blob = new Blob([content], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.textContent = `Download ${filename}`;
+                    a.className = 'generated-link mx-2 my-2';
+                    outputDiv.appendChild(a);
+                }
+
+            } catch (e) {
+                console.error(e);
+                errorDiv.textContent = 'Error: Could not generate files. Please ensure your data is in the correct JSON format in all four text boxes. Error details: ' + e.message;
+            }
+        }
+    });
     </script>
 </body>
 </html>
