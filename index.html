@@ -13,6 +13,7 @@
         }
         .tab-button {
             transition: color 0.2s, border-color 0.2s;
+            border-bottom: 2px solid transparent;
         }
         .tab-button.active {
             color: #4f46e5; /* indigo-600 */
@@ -28,6 +29,7 @@
             font-size: 0.75rem;
             color: #6b7280;
             white-space: pre-line;
+            margin-top: 4px;
         }
          input[type="color"] {
             -webkit-appearance: none;
@@ -155,7 +157,6 @@ Types valides: APPS, BOOKS, WEBSITES. Chaque type sur une nouvelle ligne.</p>
 
             <!-- Alphabet Settings -->
             <div id="alphabet-section" class="form-section">
-                <!-- This section remains the same as before -->
                  <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Alphabet</h2>
                      <div class="mb-4">
@@ -191,7 +192,6 @@ Types: Identique, Piège, Unique. Les exemples de mots sont optionnels.</p>
 
             <!-- Vocabulary Settings -->
             <div id="vocabulary-section" class="form-section">
-                <!-- This section remains the same as before -->
                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Vocabulaire</h2>
                      <div class="mb-4">
@@ -228,7 +228,6 @@ travel,Voyage</textarea>
 
             <!-- Course Settings -->
             <div id="course-section" class="form-section">
-                <!-- This section remains the same as before -->
                  <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
                     <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Cours 21 Jours</h2>
                      <div class="mb-4">
@@ -288,10 +287,6 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
     }
 
-    function generateSlug(text) {
-        return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    }
-
     function escapeHtml(unsafe) {
         if (unsafe === null || unsafe === undefined) return '';
         return unsafe.toString()
@@ -345,7 +340,8 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         const weeks = programData.split('__WEEK_SEPARATOR__');
         weeks.forEach((weekData, index) => {
             const lines = weekData.trim().split('\n');
-            const weekTitle = lines.shift().replace('WEEK:', '').trim();
+            const weekTitleLine = lines.shift() || '';
+            const weekTitle = weekTitleLine.replace('WEEK:', '').trim();
             const weekId = `week${index + 1}`;
 
             let daysHTML = '';
@@ -400,21 +396,21 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         });
 
 
-        const html = `
+        const html = \`
 <!DOCTYPE html>
-<html lang="${escapeHtml(generalSettings.nativeLanguage.slice(0, 2).toLowerCase())}">
+<html lang="\${escapeHtml(generalSettings.nativeLanguage.slice(0, 2).toLowerCase())}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${escapeHtml(generalSettings.languageName)} - Guide Complet</title>
+    <title>\${escapeHtml(generalSettings.languageName)} - Guide Complet</title>
     <style>
         :root {
-            --primary: ${escapeHtml(generalSettings.themePrimary)};
-            --secondary: ${escapeHtml(generalSettings.themeSecondary)};
-            --accent: ${escapeHtml(generalSettings.themeAccent)};
-            --light: ${escapeHtml(generalSettings.themeLight)};
-            --dark: ${escapeHtml(generalSettings.themeDark)};
-            --background: ${escapeHtml(generalSettings.themeBackground)};
+            --primary: \${escapeHtml(generalSettings.themePrimary)};
+            --secondary: \${escapeHtml(generalSettings.themeSecondary)};
+            --accent: \${escapeHtml(generalSettings.themeAccent)};
+            --light: \${escapeHtml(generalSettings.themeLight)};
+            --dark: \${escapeHtml(generalSettings.themeDark)};
+            --background: \${escapeHtml(generalSettings.themeBackground)};
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background: var(--background); }
@@ -422,9 +418,9 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         header h1 { font-size: 2.5rem; margin-bottom: 15px; }
         .flag-colors { display: flex; height: 10px; margin: 20px auto 0; width: 200px; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .flag-color-1 { background: ${escapeHtml(generalSettings.flagColor1)}; flex: 1; }
-        .flag-color-2 { background: ${escapeHtml(generalSettings.flagColor2)}; flex: 1; }
-        .flag-color-3 { background: ${escapeHtml(generalSettings.flagColor3)}; flex: 1; }
+        .flag-color-1 { background: \${escapeHtml(generalSettings.flagColor1)}; flex: 1; }
+        .flag-color-2 { background: \${escapeHtml(generalSettings.flagColor2)}; flex: 1; }
+        .flag-color-3 { background: \${escapeHtml(generalSettings.flagColor3)}; flex: 1; }
         .navigation { background: white; padding: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
         .nav-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
         .nav-btn { background: var(--primary); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; }
@@ -450,8 +446,8 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
 <body>
     <header>
         <div class="container">
-            <h1>${escapeHtml(generalSettings.languageName)}</h1>
-            <p>Votre guide complet pour maîtriser la langue ${escapeHtml(generalSettings.targetLanguage.toLowerCase())}</p>
+            <h1>\${escapeHtml(generalSettings.languageName)}</h1>
+            <p>Votre guide complet pour maîtriser la langue \${escapeHtml(generalSettings.targetLanguage.toLowerCase())}</p>
             <div class="flag-colors"><div class="flag-color-1"></div><div class="flag-color-2"></div><div class="flag-color-3"></div></div>
         </div>
     </header>
@@ -468,8 +464,8 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
     <main class="container">
         <div class="main-content">
             <section class="intro-section">
-                <h2>${escapeHtml(introTitle)}</h2>
-                <p>${escapeHtml(introParagraph)}</p>
+                <h2>\${escapeHtml(introTitle)}</h2>
+                <p>\${escapeHtml(introParagraph)}</p>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">🔤</div><h3>Alphabet</h3><p>Maîtrisez l'alphabet avec notre guide interactif.</p><a href="alphabet.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Commencer</a>
@@ -484,18 +480,18 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
             </section>
              <section class="program-overview" style="margin-top:50px;">
                 <h2>Aperçu du Programme d'Apprentissage en 21 Jours</h2>
-                ${programAccordionHTML}
+                \${programAccordionHTML}
                  <div style="text-align: center; margin-top: 30px;">
                     <a href="cours-21-jours.html" class="nav-btn" style="background-color: var(--secondary);">Accéder au Programme Complet</a>
                 </div>
             </section>
             <section id="ressources" style="margin-top: 50px;">
                 <h2>Ressources Complémentaires</h2>
-                <div class="features-grid">${resourcesHTML}</div>
+                <div class="features-grid">\${resourcesHTML}</div>
             </section>
         </div>
     </main>
-    <footer><p>&copy; ${new Date().getFullYear()} ${escapeHtml(generalSettings.languageName)}</p></footer>
+    <footer><p>&copy; \${new Date().getFullYear()} \${escapeHtml(generalSettings.languageName)}</p></footer>
     <script>
         function toggleWeek(weekId) {
             const content = document.getElementById(weekId);
@@ -516,13 +512,10 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         }
     </script>
 </body>
-</html>`;
+</html>\`;
         downloadFile('index.html', html);
     }
     
-    // The other generation functions (generateAlphabetHTML, etc.) remain the same
-    // but their navigation links should also be updated. I will do that now.
-
     function generateAlphabetHTML() {
         const generalSettings = getGeneralSettings();
         const pageTitle = document.getElementById('alphabetPageTitle').value;
@@ -540,28 +533,28 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
                     examplesHTML = wordExamplesStr.split('|').map(ex => {
                         const [word, pron, trans] = ex.split(',');
                         if (!word || !pron || !trans) return '';
-                        return `<div class="word-example"><span class="word">${escapeHtml(word)}</span> <span class="pronunciation">${escapeHtml(pron)}</span> <span class="translation">- ${escapeHtml(trans)}</span></div>`;
+                        return \`<div class="word-example"><span class="word">\${escapeHtml(word)}</span> <span class="pronunciation">\${escapeHtml(pron)}</span> <span class="translation">- \${escapeHtml(trans)}</span></div>\`;
                     }).join('');
                 }
                 const cardClass = type.toLowerCase() === 'identique' ? 'similar' : type.toLowerCase() === 'piège' ? 'different' : 'unique';
-                lettersHTML += `
-<div class="letter-card ${cardClass}" data-letter="${escapeHtml(charMaj)} ${escapeHtml(charMin)}">
-    <span class="letter-type">${escapeHtml(type)}</span>
-    <div class="letter-display"><span>${escapeHtml(charMaj)}</span><span>${escapeHtml(charMin)}</span></div>
-    <div class="pronunciation">${escapeHtml(pronunciation)}</div>
-    <div class="example">${escapeHtml(example)}</div>
-    ${examplesHTML ? `<div class="word-examples">${examplesHTML}</div>` : ''}
-</div>`;
+                lettersHTML += \`
+<div class="letter-card \${cardClass}" data-letter="\${escapeHtml(charMaj)} \${escapeHtml(charMin)}">
+    <span class="letter-type">\${escapeHtml(type)}</span>
+    <div class="letter-display"><span>\${escapeHtml(charMaj)}</span><span>\${escapeHtml(charMin)}</span></div>
+    <div class="pronunciation">\${escapeHtml(pronunciation)}</div>
+    <div class="example">\${escapeHtml(example)}</div>
+    \${examplesHTML ? \`<div class="word-examples">\${examplesHTML}</div>\` : ''}
+</div>\`;
             }
         });
 
-         const html = `
+         const html = \`
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(pageTitle)}</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
     <style>
-        :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; --accent: ${escapeHtml(generalSettings.themeAccent)}; --russe: ${escapeHtml(generalSettings.themeRusse)}; --francais: ${escapeHtml(generalSettings.themeFrancais)}; --card-bg: ${escapeHtml(generalSettings.themeCardBg)}; --background: ${escapeHtml(generalSettings.themeBackground)}; --dark: ${escapeHtml(generalSettings.themeDark)}; }
+        :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --card-bg: \${escapeHtml(generalSettings.themeCardBg)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--dark); }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
         header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 2rem 0; text-align: center; }
@@ -578,15 +571,15 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
     </style>
 </head>
 <body>
-    <header><div class="container"><h1>${escapeHtml(pageTitle)}</h1><p>${escapeHtml(pageSubtitle)}</p></div></header>
+    <header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1><p>\${escapeHtml(pageSubtitle)}</p></div></header>
     <nav><div class="nav-buttons">
         <a href="index.html" class="nav-btn">🏠 Accueil</a>
         <a href="alphabet.html" class="nav-btn active">🔤 Alphabet</a>
         <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
         <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
     </div></nav>
-    <main class="container"><h2>L'alphabet complet</h2><div class="alphabet-grid">${lettersHTML}</div></main>
-</body></html>`;
+    <main class="container"><h2>L'alphabet complet</h2><div class="alphabet-grid">\${lettersHTML}</div></main>
+</body></html>\`;
         downloadFile('alphabet.html', html);
     }
 
@@ -600,17 +593,17 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
         const categories = categoriesData.split('\n').map(line => {
             const parts = line.split(','); return { id: parts[0]?.trim(), name: parts[1]?.trim() };
         }).filter(cat => cat.id && cat.name);
-        categories.forEach(cat => { categoryFiltersHTML += `<button class="category-filter" data-category="${escapeHtml(cat.id)}">${escapeHtml(cat.name)}</button>`; });
+        categories.forEach(cat => { categoryFiltersHTML += \`<button class="category-filter" data-category="\${escapeHtml(cat.id)}">\${escapeHtml(cat.name)}</button>\`; });
         
         const vocabularyArray = wordsData.split('\n').filter(row => row.trim() !== '').map(row => {
             const parts = row.split(';');
             return { russian: parts[0]?.trim() || '', pronunciation: parts[1]?.trim() || '', translation: parts[2]?.trim() || '', categories: parts[3] ? parts[3].split(',').map(c => c.trim()) : ['basics'], nuance: parts[4]?.trim() || '' };
         });
 
-        const html = `
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(pageTitle)}</title>
+        const html = \`
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
 <style>
-    :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; --accent: ${escapeHtml(generalSettings.themeAccent)}; --russe: ${escapeHtml(generalSettings.themeRusse)}; --francais: ${escapeHtml(generalSettings.themeFrancais)}; --card-bg: ${escapeHtml(generalSettings.themeCardBg)}; --background: ${escapeHtml(generalSettings.themeBackground)}; --dark: ${escapeHtml(generalSettings.themeDark)}; }
+    :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --card-bg: \${escapeHtml(generalSettings.themeCardBg)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; }
     body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--dark); }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
@@ -627,22 +620,22 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
 </style>
 </head>
 <body>
-<header><div class="container"><h1>${escapeHtml(pageTitle)}</h1></div></header>
+<header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1></div></header>
 <nav><div class="nav-buttons">
     <a href="index.html" class="nav-btn">🏠 Accueil</a><a href="alphabet.html" class="nav-btn">🔤 Alphabet</a><a href="vocabulaire.html" class="nav-btn active">📚 Vocabulaire</a><a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
 </div></nav>
 <main class="container">
-    <div class="category-filters">${categoryFiltersHTML}</div>
+    <div class="category-filters">\${categoryFiltersHTML}</div>
     <div class="vocab-container" id="vocab-container"></div>
 </main>
 <script>
-    const vocabulary = ${JSON.stringify(vocabularyArray)};
+    const vocabulary = \${JSON.stringify(vocabularyArray)};
     function displayWords(filter = 'all') {
         const container = document.getElementById('vocab-container'); container.innerHTML = '';
         const wordsToDisplay = filter === 'all' ? vocabulary : vocabulary.filter(w => w.categories.includes(filter));
         wordsToDisplay.forEach(word => {
             const card = document.createElement('div'); card.className = 'vocab-card';
-            card.innerHTML = \`<div class="russian-word">\${word.russian}</div><div class="pronunciation">\${word.pronunciation}</div><div class="translation">\${word.translation}</div>\${word.nuance ? \`<p style="margin-top:10px;font-size:0.9em;color:#555;"><em>Nuance: \${word.nuance}</em></p>` : ''}\`;
+            card.innerHTML = \\\`<div class="russian-word">\\\${word.russian}</div><div class="pronunciation">\\\${word.pronunciation}</div><div class="translation">\\\${word.translation}</div>\\\${word.nuance ? \\\`<p style="margin-top:10px;font-size:0.9em;color:#555;"><em>Nuance: \\\${word.nuance}</em></p>\` : ''}\\\`;
             container.appendChild(card);
         });
     }
@@ -655,7 +648,7 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
     });
     displayWords();
 </script>
-</body></html>`;
+</body></html>\`;
         downloadFile('vocabulaire.html', html);
     }
     
@@ -673,35 +666,35 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
             const weekNum = Math.ceil(parseInt(dayNum) / 7);
             if (sidebarDays[weekNum]) { sidebarDays[weekNum].push({day: dayNum, title: dayTitle}); }
 
-            dayContentsHTML += `<div id="jour${escapeHtml(dayNum)}" class="tab-content"><div class="card"><div class="card-header"><h2>Jour ${escapeHtml(dayNum)}: ${escapeHtml(dayTitle)}</h2></div><div class="card-body">`;
-            dayContentsHTML += `<div class="section"><h3 class="section-title">Objectif du jour</h3><p>${escapeHtml(dayObjective)}</p></div>`;
+            dayContentsHTML += \`<div id="jour\${escapeHtml(dayNum)}" class="tab-content"><div class="card"><div class="card-header"><h2>Jour \${escapeHtml(dayNum)}: \${escapeHtml(dayTitle)}</h2></div><div class="card-body">\`;
+            dayContentsHTML += \`<div class="section"><h3 class="section-title">Objectif du jour</h3><p>\${escapeHtml(dayObjective)}</p></div>\`;
             lines.forEach(sectionLine => {
                  const [typeAndTitle, ...dataParts] = sectionLine.split('|'); const [type, title] = typeAndTitle.split(':'); const contentData = dataParts.join('|').trim();
-                 dayContentsHTML += `<div class="section"><h3 class="section-title">${escapeHtml(title || '')}</h3>`;
+                 dayContentsHTML += \`<div class="section"><h3 class="section-title">\${escapeHtml(title || '')}</h3>\`;
                  switch(type.trim().toUpperCase()) {
-                     case 'TEXT_SECTION': dayContentsHTML += `<p>${escapeHtml(contentData)}</p>`; break;
-                     case 'LETTER_GRID': const letters = contentData.split('|').map(l=>l.split(',')); dayContentsHTML += `<div class="letter-grid">`; letters.forEach(l => { if(l.length >= 3) dayContentsHTML += `<div class="letter-item"><div class="cyrillic"><span>${escapeHtml(l[0])}</span><span>${escapeHtml(l[1])}</span></div><div class="pronunciation">${escapeHtml(l[2])}</div>${l[3]?`<div class="example">${escapeHtml(l[3])}</div>`:''}</div>`; }); dayContentsHTML += `</div>`; break;
-                     case 'VOCAB_LIST': const vocabs = contentData.split('|').map(v=>v.split(',')); dayContentsHTML += `<div class="vocab-list">`; vocabs.forEach(v => { if(v.length >= 3) dayContentsHTML += `<div class="vocab-item"><div><div class="term">${escapeHtml(v[0])}</div><div class="pronunciation">${escapeHtml(v[1])}</div></div><div class="translation">${escapeHtml(v[2])}</div></div>`; }); dayContentsHTML += `</div>`; break;
-                     case 'EXERCISE': dayContentsHTML += `<div class="exercise"><div class="exercise-title">${escapeHtml(title)}</div><p>${escapeHtml(contentData)}</p></div>`; break;
-                     case 'FOCUS_BOX': case 'NOTE_BOX': dayContentsHTML += `<div class="note-box"><div class="note-title">${escapeHtml(title)}</div><p>${escapeHtml(contentData).replace(/\n/g, '<br>')}</p></div>`; break;
-                     case 'RECAP_LIST': const items = contentData.split('|'); dayContentsHTML += `<div class="recap-list"><ul>`; items.forEach(item => dayContentsHTML += `<li>${escapeHtml(item)}</li>`); dayContentsHTML += `</ul></div>`; break;
-                     case 'DIALOGUE': const Dlines = contentData.split('|'); dayContentsHTML += `<div class="dialogue-box">`; Dlines.forEach(line => {const [speaker, text] = line.split(':'); dayContentsHTML += `<div class="dialogue-line"><span class="speaker">${escapeHtml(speaker)}:</span> <span class="russian">${escapeHtml(text)}</span></div>`; }); dayContentsHTML += `</div>`; break;
+                     case 'TEXT_SECTION': dayContentsHTML += \`<p>\${escapeHtml(contentData)}</p>\`; break;
+                     case 'LETTER_GRID': const letters = contentData.split('|').map(l=>l.split(',')); dayContentsHTML += \`<div class="letter-grid">\`; letters.forEach(l => { if(l.length >= 3) dayContentsHTML += \`<div class="letter-item"><div class="cyrillic"><span>\${escapeHtml(l[0])}</span><span>\${escapeHtml(l[1])}</span></div><div class="pronunciation">\${escapeHtml(l[2])}</div>\${l[3]?\`<div class="example">\${escapeHtml(l[3])}</div>\`:''}</div>\`; }); dayContentsHTML += \`</div>\`; break;
+                     case 'VOCAB_LIST': const vocabs = contentData.split('|').map(v=>v.split(',')); dayContentsHTML += \`<div class="vocab-list">\`; vocabs.forEach(v => { if(v.length >= 3) dayContentsHTML += \`<div class="vocab-item"><div><div class="term">\${escapeHtml(v[0])}</div><div class="pronunciation">\${escapeHtml(v[1])}</div></div><div class="translation">\${escapeHtml(v[2])}</div></div>\`; }); dayContentsHTML += \`</div>\`; break;
+                     case 'EXERCISE': dayContentsHTML += \`<div class="exercise"><div class="exercise-title">\${escapeHtml(title)}</div><p>\${escapeHtml(contentData)}</p></div>\`; break;
+                     case 'FOCUS_BOX': case 'NOTE_BOX': dayContentsHTML += \`<div class="note-box"><div class="note-title">\${escapeHtml(title)}</div><p>\${escapeHtml(contentData).replace(/\\n/g, '<br>')}</p></div>\`; break;
+                     case 'RECAP_LIST': const items = contentData.split('|'); dayContentsHTML += \`<div class="recap-list"><ul>\`; items.forEach(item => dayContentsHTML += \`<li>\${escapeHtml(item)}</li>\`); dayContentsHTML += \`</ul></div>\`; break;
+                     case 'DIALOGUE': const Dlines = contentData.split('|'); dayContentsHTML += \`<div class="dialogue-box">\`; Dlines.forEach(line => {const [speaker, text] = line.split(':'); dayContentsHTML += \`<div class="dialogue-line"><span class="speaker">\${escapeHtml(speaker)}:</span> <span class="russian">\${escapeHtml(text)}</span></div>\`; }); dayContentsHTML += \`</div>\`; break;
                  }
-                 dayContentsHTML += `</div>`;
+                 dayContentsHTML += \`</div>\`;
             });
-            dayContentsHTML += `</div></div></div>`;
+            dayContentsHTML += \`</div></div></div>\`;
         });
 
         let sidebarHTML = '';
         for (let i = 1; i <= 3; i++) {
-            sidebarHTML += `<div class="sidebar-week-item"><h4>Semaine ${i}</h4><ul class="sidebar-day-list">`;
-            sidebarDays[i].forEach(day => { sidebarHTML += `<li><a href="#jour${day.day}" onclick="openTab('jour${day.day}')">${day.title}</a></li>`; });
-            sidebarHTML += `</ul></div>`;
+            sidebarHTML += \`<div class="sidebar-week-item"><h4>Semaine \${i}</h4><ul class="sidebar-day-list">\`;
+            sidebarDays[i].forEach(day => { sidebarHTML += \`<li><a href="#jour\${day.day}" onclick="openTab('jour\${day.day}')">\${day.title}</a></li>\`; });
+            sidebarHTML += \`</ul></div>\`;
         }
         
-        const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escapeHtml(pageTitle)}</title>
+        const html = \`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
 <style>
-    :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; --accent: ${escapeHtml(generalSettings.themeAccent)}; --russe: ${escapeHtml(generalSettings.themeRusse)}; --francais: ${escapeHtml(generalSettings.themeFrancais)}; --background: ${escapeHtml(generalSettings.themeBackground)}; --dark: ${escapeHtml(generalSettings.themeDark)}; --card-bg: white; --text-primary: var(--dark); --border-color: #e2e8f0; --success: #38a169; --warning: #d69e2e; --info: #3182ce; }
+    :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; --card-bg: white; --text-primary: var(--dark); --border-color: #e2e8f0; --success: #38a169; --warning: #d69e2e; --info: #3182ce; }
     body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--text-primary); }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
@@ -724,26 +717,34 @@ Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...<
 </style>
 </head>
 <body>
-<header><div class="container"><h1>${escapeHtml(pageTitle)}</h1></div></header>
+<header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1></div></header>
 <nav><div class="nav-buttons">
     <a href="index.html" class="nav-btn">🏠 Accueil</a><a href="alphabet.html" class="nav-btn">🔤 Alphabet</a><a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a><a href="cours-21-jours.html" class="nav-btn active">📅 Programme 21 jours</a>
 </div></nav>
 <div class="container content-wrapper">
-    <nav class="sidebar-nav">${sidebarHTML}</nav>
-    <main class="main-content">${dayContentsHTML}</main>
+    <nav class="sidebar-nav">\${sidebarHTML}</nav>
+    <main class="main-content">\${dayContentsHTML}</main>
 </div>
 <script>
     function openTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
         document.getElementById(tabId).style.display = 'block';
+        window.location.hash = tabId; // Update URL hash for better navigation
     }
-    // Set the first day to be visible on load
-    document.addEventListener('DOMContentLoaded', () => openTab('jour1'));
+    // Check for hash on load to open the correct tab
+    document.addEventListener('DOMContentLoaded', () => {
+        if(window.location.hash) {
+            openTab(window.location.hash.substring(1));
+        } else {
+            openTab('jour1');
+        }
+    });
 </script>
-</body></html>`;
+</body></html>\`;
         downloadFile('cours-21-jours.html', html);
     }
 </script>
 
 </body>
 </html>
+```</immersive>
