@@ -123,9 +123,13 @@
     </footer>
 
     <script>
-    // --- TEMPLATES FOR THE GENERATED HTML FILES ---
-    // This section contains the functions that build the HTML files.
-    // It is kept in a separate script block to ensure it's not rendered as text.
+    // --- TEMPLATES AND LOGIC SCRIPT ---
+
+    // This single script block contains all the necessary functions and data.
+    // It runs after the main HTML body has been loaded, preventing rendering issues.
+
+    // SECTION 1: HTML TEMPLATE FUNCTIONS
+    // These functions take a data object and return the full HTML for a page.
 
     const mainTemplate = (data) => `
 <!DOCTYPE html>
@@ -570,13 +574,10 @@
 </body>
 </html>`;
 
-    // --- SCRIPT FOR PAGE LOGIC ---
-    // This script block handles the core functionality of the generator page.
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- EXAMPLE DATA ---
-        const examples = {
-            mainData: `{
+    // SECTION 2: EXAMPLE DATA
+    // This object holds the example JSON data for each page.
+    const examples = {
+        mainData: `{
   "lang": "en",
   "title": "Learn MyLanguage - Complete Guide",
   "header": {
@@ -596,7 +597,7 @@
     "text": "&copy; 2024 Learn MyLanguage - Created by You!"
   }
 }`,
-            alphabetData: `{
+        alphabetData: `{
     "lang": "en",
     "title": "The MyLanguage Alphabet",
     "pageTitle": "The MyLanguage Alphabet",
@@ -613,7 +614,7 @@
     ],
     "footerText": "Guide to learning the MyLanguage alphabet."
 }`,
-            vocabularyData: `{
+        vocabularyData: `{
     "lang": "en",
     "title": "MyLanguage Vocabulary",
     "header": { "title": "MyLanguage Vocabulary" },
@@ -628,7 +629,7 @@
         { "term": "Poyezd", "pronunciation": "po-yezd", "translation": "Train", "categories": ["travel"], "nuance": "Refers to a long-distance train." }
     ]
 }`,
-            lessonsData: `{
+        lessonsData: `{
     "lang": "en",
     "title": "MyLanguage Lessons",
     "header": { "title": "MyLanguage Lessons Program" },
@@ -663,15 +664,25 @@
         }
     ]
 }`
-        };
-        
-        // Pre-fill textareas with example data
+    };
+    
+    // SECTION 3: PAGE INITIALIZATION
+    // This function populates the textareas with the example data.
+    // It's called directly to avoid timing issues.
+    function initializePage() {
+        // Pre-fill textareas with nicely formatted example data
         document.getElementById('mainData').value = JSON.stringify(JSON.parse(examples.mainData), null, 2);
         document.getElementById('alphabetData').value = JSON.stringify(JSON.parse(examples.alphabetData), null, 2);
         document.getElementById('vocabularyData').value = JSON.stringify(JSON.parse(examples.vocabularyData), null, 2);
         document.getElementById('lessonsData').value = JSON.stringify(JSON.parse(examples.lessonsData), null, 2);
-    });
+    }
+    
+    // Call the initialization function as soon as the script loads.
+    initializePage();
 
+
+    // SECTION 4: WEBSITE GENERATION FUNCTION
+    // This function is called when the "Generate" button is clicked.
     function generateWebsite() {
         const outputDiv = document.getElementById('output');
         const errorDiv = document.getElementById('error');
