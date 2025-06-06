@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning Site Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .tab-button {
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .tab-button.active {
+            color: #4f46e5; /* indigo-600 */
+            border-color: #4f46e5; /* indigo-600 */
+        }
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .help-text {
+            font-size: 0.75rem;
+            color: #6b7280;
+            white-space: pre-line;
+        }
+         input[type="color"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 2.75rem; /* w-11 */
+            height: 2.5rem; /* h-10 */
+            padding: 0;
+            border: none;
+            border-radius: 0 0.5rem 0.5rem 0; /* rounded-r-lg */
+            cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden my-8">
+        <header class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sm:p-8 text-white">
+            <h1 class="text-3xl sm:text-4xl font-bold text-center">Générateur de Site d'Apprentissage de Langues</h1>
+            <p class="text-center text-indigo-200 mt-2">Créez vos propres sites d'apprentissage facilement!</p>
+        </header>
+
+        <nav class="flex border-b bg-gray-50">
+            <button onclick="showTab('general')" class="tab-button active py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="general">Général</button>
+            <button onclick="showTab('index')" class="tab-button py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="index">Index</button>
+            <button onclick="showTab('alphabet')" class="tab-button py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="alphabet">Alphabet</button>
+            <button onclick="showTab('vocabulary')" class="tab-button py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="vocabulary">Vocabulaire</button>
+            <button onclick="showTab('course')" class="tab-button py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="course">Cours 21 Jours</button>
+        </nav>
+
+        <main class="p-6 sm:p-8">
+            <!-- General Settings -->
+            <div id="general-section" class="form-section active">
+                <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Paramètres Généraux</h2>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="languageName">Nom du Site (e.g., "Apprendre l'Espagnol")</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="languageName" type="text" value="Apprendre le Russe">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="targetLanguage">Langue Cible (e.g., "Espagnol")</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="targetLanguage" type="text" value="Russe">
+                    </div>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nativeLanguage">Langue Native (e.g., "Français")</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="nativeLanguage" type="text" value="Français">
+                    </div>
+
+                    <h3 class="text-lg font-semibold text-gray-700 mt-6 mb-2">Couleurs du drapeau (style en-tête)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor1">Couleur 1</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor1" type="text" value="#FFFFFF"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#FFFFFF"></div></div>
+                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor2">Couleur 2</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor2" type="text" value="#0039A6"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#0039A6"></div></div>
+                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor3">Couleur 3</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor3" type="text" value="#D52B1E"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#D52B1E"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Index Settings -->
+            <div id="index-section" class="form-section">
+                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page d'Accueil (index.html)</h2>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="introTitle">Titre Introduction</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="introTitle" type="text" value="Bienvenue dans votre aventure russe !">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="introParagraph">Paragraphe Introduction</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="introParagraph" rows="3">Découvrez la richesse de la langue russe à travers notre méthode progressive et interactive. De l'alphabet cyrillique aux conversations courantes, nous vous accompagnons à chaque étape de votre apprentissage.</textarea>
+                    </div>
+                    <button onclick="generateIndexHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
+                        Générer index.html
+                    </button>
+                </div>
+            </div>
+
+            <!-- Alphabet Settings -->
+            <div id="alphabet-section" class="form-section">
+                <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Alphabet</h2>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="alphabetPageTitle">Titre Page Alphabet</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="alphabetPageTitle" type="text" value="L'Alphabet Russe">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="alphabetPageSubtitle">Sous-titre Page</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="alphabetPageSubtitle" type="text" value="Un guide simple pour apprendre le cyrillique">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lettersData">Données des Lettres</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="lettersData" rows="15">А;а;[a];comme dans "papa";Identique;ананас,[ananas],ananas|автобус,[aftabus],bus
+К;к;[k];comme dans "képi";Identique;кот,[kot],chat|кофе,[kofié],café
+М;м;[m];comme dans "maman";Identique;мама,[mama],maman|метро,[mitra],métro
+О;о;[o];comme dans "mot";Identique;окно,[akno],fenêtre|дом,[dom],maison
+Т;т;[t];comme dans "ton";Identique;там,[tam],là-bas|стол,[stol],table
+В;в;[v];comme dans "vous";Piège;вода,[vada],eau|вот,[vot],voici
+Н;н;[n];comme dans "non";Piège;нос,[nos],nez|ночь,[notch],nuit
+Р;р;[r];roulé;Piège;рука,[rouka],main|рыба,[ryba],poisson
+С;с;[s];comme dans "savoir";Piège;сок,[sok],jus|суп,[soup],soupe
+У;у;[ou];comme dans "loup";Piège;утро,[outra],matin|ухо,[oukha],oreille
+Х;х;[kh];jota espagnole;Piège;хлеб,[khlièb],pain|хорошо,[kharacho],bien
+Б;б;[b];comme dans "bon";Unique;брат,[brat],frère|банан,[banan],banane</textarea>
+                        <p class="help-text">Format par ligne : Maj;min;[prononciation];comme "exemple";Type;mot1,[pron1],trad1|mot2,[pron2],trad2
+Types: Identique, Piège, Unique. Les exemples de mots sont optionnels.</p>
+                    </div>
+                    <button onclick="generateAlphabetHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
+                        Générer alphabet.html
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vocabulary Settings -->
+            <div id="vocabulary-section" class="form-section">
+                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Vocabulaire</h2>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="vocabPageTitle">Titre Page Vocabulaire</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="vocabPageTitle" type="text" value="Vocabulaire Russe">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="vocabCategories">Catégories</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="vocabCategories" rows="5">basics,Bases
+greetings,Salutations
+numbers,Nombres
+food,Nourriture
+travel,Voyage</textarea>
+                        <p class="help-text">Format par ligne : id,NomAffiché</p>
+                    </div>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="wordsData">Mots de Vocabulaire</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="wordsData" rows="15">здравствуйте;[zdravstvouytié];bonjour (formel);greetings
+до свидания;[da svidaniya];au revoir;greetings
+да;[da];oui;basics
+нет;[niet];non;basics
+мир;[mir];monde / paix;basics;Peut signifier 'monde' (l'univers) ou 'paix'.
+язык;[yazyk];langue / langue (organe);basics;Peut signifier 'langue' (pour parler) ou 'langue' (l'organe).
+вода;[vada];eau;food
+хлеб;[khlièb];pain;food
+один;[adin];un;numbers</textarea>
+                        <p class="help-text">Format par ligne : MotCible;[prononciation];Traduction;catégorie1,catégorie2;Nuance (optionnel)</p>
+                    </div>
+                    <button onclick="generateVocabularyHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
+                        Générer vocabulaire.html
+                    </button>
+                </div>
+            </div>
+
+            <!-- Course Settings -->
+            <div id="course-section" class="form-section">
+                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Cours 21 Jours</h2>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="coursePageTitle">Titre Page Cours</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="coursePageTitle" type="text" value="Cours de Russe en 21 Jours">
+                    </div>
+                     <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="daysData">Données des Jours</label>
+                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="daysData" rows="20">1;Découverte de l'Alphabet (Partie 1);Se familiariser avec les dix premières lettres.
+TEXT_SECTION:Introduction|Bienvenue au premier jour !
+LETTER_GRID:Les 10 premières lettres|А,а,[a],papa|Б,б,[b],bon|В,в,[v],vous
+VOCAB_LIST:Vocabulaire de base|да,[da],oui|нет,[niet],non
+EXERCISE:Exercice d'écriture|Tracez chaque lettre 10 fois.
+FOCUS_BOX:Focus Culturel: Origine de l'alphabet|L'alphabet cyrillique tire son nom de Saint Cyrille...
+__DAY_SEPARATOR__
+2;Découverte de l'Alphabet (Partie 2);Apprendre les dix lettres suivantes.
+TEXT_SECTION:Révision|Revoyons les lettres d'hier.
+LETTER_GRID:Les 10 lettres suivantes|Г,г,[g],gare|Д,д,[d],dans
+VOCAB_LIST:Objets courants|дом,[dom],maison|стол,[stol],table
+EXERCISE:Association|Reliez les sons aux lettres.
+FOCUS_BOX:Phonétique: L'akanie|Lorsque "о" n'est pas accentuée, elle se prononce [a]...
+__DAY_SEPARATOR__
+7;Révision Semaine 1;Consolider les acquis.
+TEXT_SECTION:Récapitulatif|Nous avons couvert l'alphabet et les salutations.
+RECAP_LIST:Acquis de la semaine|Alphabet complet|Salutations de base|Nombres 1-10
+EXERCISE:Quiz rapide|Testez vos connaissances de la semaine.
+FOCUS_BOX:Conseils d'étude|Pratiquez 15 minutes chaque jour.
+__DAY_SEPARATOR__
+21;Révision Générale et Bilan;Consolider tous les acquis des trois semaines.
+TEXT_SECTION:Félicitations!|Vous avez terminé le programme de base!
+RECAP_LIST:Compétences acquises|Compréhension orale de base|Expression orale simple|Lecture de textes courts
+EXERCISE:Auto-évaluation|Évaluez vos progrès et identifiez les points à renforcer.
+FOCUS_BOX:Prochaines étapes|Continuez votre apprentissage avec des ressources intermédiaires.</textarea>
+                        <p class="help-text">Séparez chaque jour par "__DAY_SEPARATOR__".
+Format Jour: Numéro;Titre;Objectif
+Format Section: TYPE:Titre(optionnel)|Contenu/Données
+Types: TEXT_SECTION, LETTER_GRID, VOCAB_LIST, NOTE_BOX, FOCUS_BOX, EXERCISE, DIALOGUE, RECAP_LIST
+Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...</p>
+                    </div>
+                    <button onclick="generateCourseHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
+                        Générer cours-21-jours.html
+                    </button>
+                </div>
+            </div>
+        </main>
+        <footer class="p-6 bg-gray-50 border-t text-center">
+            <p class="text-sm text-gray-500">Language Learning Site Generator - Gemini 2024</p>
+        </footer>
+    </div>
+
+<script>
+    // --- UTILITY FUNCTIONS ---
+    function showTab(tabName) {
+        document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+        document.getElementById(`${tabName}-section`).classList.add('active');
+        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+    }
+
+    function generateSlug(text) {
+        return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    }
+
+    function escapeHtml(unsafe) {
+        if (unsafe === null || unsafe === undefined) return '';
+        return unsafe.toString()
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
+    function downloadFile(filename, content) {
+      const element = document.createElement('a');
+      element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(content));
+      element.setAttribute('download', filename);
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    // --- TEMPLATE GENERATION LOGIC ---
+
+    function getGeneralSettings() {
+        return {
+            languageName: document.getElementById('languageName').value,
+            targetLanguage: document.getElementById('targetLanguage').value,
+            nativeLanguage: document.getElementById('nativeLanguage').value,
+            flagColor1: document.getElementById('flagColor1').value,
+            flagColor2: document.getElementById('flagColor2').value,
+            flagColor3: document.getElementById('flagColor3').value,
+            // You can add theme colors here if you want them to be user-configurable
+            themePrimary: '#1e3a8a',
+            themeSecondary: '#c53030',
+            themeAccent: '#5a67d8',
+            themeRusse: '#c53030', // Target language text color
+            themeFrancais: '#3182ce', // Native language text color
+            themeBackground: '#f0f5ff',
+            themeCardBg: '#ffffff',
+            themeLight: '#f7fafc',
+            themeDark: '#2d3748'
+        };
+    }
+
+    function generateIndexHTML() {
+        const generalSettings = getGeneralSettings();
+        const slug = generateSlug(generalSettings.targetLanguage);
+        const introTitle = document.getElementById('introTitle').value;
+        const introParagraph = document.getElementById('introParagraph').value;
+
+        const html = `
+<!DOCTYPE html>
+<html lang="${escapeHtml(generalSettings.nativeLanguage.slice(0, 2).toLowerCase())}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(generalSettings.languageName)} - Guide Complet</title>
+    <style>
+        :root {
+            --primary: ${escapeHtml(generalSettings.themePrimary)};
+            --secondary: ${escapeHtml(generalSettings.themeSecondary)};
+            --accent: ${escapeHtml(generalSettings.themeAccent)};
+            --light: ${escapeHtml(generalSettings.themeLight)};
+            --dark: ${escapeHtml(generalSettings.themeDark)};
+            --background: ${escapeHtml(generalSettings.themeBackground)};
+        }
+        /* Basic styles, similar to your original site */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background: var(--background); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        .flag-colors { display: flex; height: 10px; margin: 20px auto 0; width: 200px; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .flag-color-1 { background: ${escapeHtml(generalSettings.flagColor1)}; flex: 1; }
+        .flag-color-2 { background: ${escapeHtml(generalSettings.flagColor2)}; flex: 1; }
+        .flag-color-3 { background: ${escapeHtml(generalSettings.flagColor3)}; flex: 1; }
+        .navigation { background: white; padding: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .nav-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .nav-btn { background: var(--primary); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
+        .nav-btn.active { background: var(--secondary); }
+        .main-content { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px; }
+        .intro-section h2 { color: var(--primary); font-size: 2rem; text-align:center; margin-bottom: 20px; }
+        .intro-section p { font-size: 1.1rem; max-width: 800px; margin: 0 auto 30px; text-align:center; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .feature-card { background: var(--light); padding: 30px; border-radius: 10px; text-align: center; transition: transform 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; }
+        .feature-card h3 { color: var(--primary); margin-bottom: 15px; }
+        footer { background: var(--primary); color: white; text-align: center; padding: 30px 0; margin-top: 50px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>${escapeHtml(generalSettings.languageName)}</h1>
+            <p>Votre guide complet pour maîtriser la langue ${escapeHtml(generalSettings.targetLanguage.toLowerCase())}</p>
+            <div class="flag-colors">
+                <div class="flag-color-1"></div>
+                <div class="flag-color-2"></div>
+                <div class="flag-color-3"></div>
+            </div>
+        </div>
+    </header>
+    <nav class="navigation">
+        <div class="container">
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn active">🏠 Accueil</a>
+                <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
+                <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
+                <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="main-content">
+            <section class="intro-section">
+                <h2>${escapeHtml(introTitle)}</h2>
+                <p>${escapeHtml(introParagraph)}</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔤</div>
+                        <h3>Alphabet</h3>
+                        <p>Maîtrisez l'alphabet avec notre guide interactif.</p>
+                        <a href="alphabet.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Commencer</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Vocabulaire Essentiel</h3>
+                        <p>Mots classés par thème avec prononciation et traduction.</p>
+                        <a href="vocabulaire.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Explorer</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Programme 21 Jours</h3>
+                        <p>Un parcours structuré pour acquérir les bases en trois semaines.</p>
+                        <a href="cours-21-jours.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Découvrir</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; ${new Date().getFullYear()} ${escapeHtml(generalSettings.languageName)}</p>
+    </footer>
+</body>
+</html>`;
+        downloadFile('index.html', html);
+    }
+    
+    function generateAlphabetHTML() {
+        const generalSettings = getGeneralSettings();
+        const pageTitle = document.getElementById('alphabetPageTitle').value;
+        const pageSubtitle = document.getElementById('alphabetPageSubtitle').value;
+        const lettersData = document.getElementById('lettersData').value;
+
+        let lettersHTML = '';
+        const letterRows = lettersData.split('\n').filter(row => row.trim() !== '');
+        letterRows.forEach(row => {
+            const parts = row.split(';');
+            if (parts.length >= 5) {
+                const [charMaj, charMin, pronunciation, example, type, wordExamplesStr = ''] = parts;
+                let examplesHTML = '';
+                if (wordExamplesStr) {
+                    examplesHTML = wordExamplesStr.split('|').map(ex => {
+                        const [word, pron, trans] = ex.split(',');
+                        if (!word || !pron || !trans) return '';
+                        return `<div class="word-example"><span class="word">${escapeHtml(word)}</span> <span class="pronunciation">${escapeHtml(pron)}</span> <span class="translation">- ${escapeHtml(trans)}</span></div>`;
+                    }).join('');
+                }
+                const cardClass = type.toLowerCase() === 'identique' ? 'similar' : type.toLowerCase() === 'piège' ? 'different' : 'unique';
+                lettersHTML += `
+<div class="letter-card ${cardClass}" data-letter="${escapeHtml(charMaj)} ${escapeHtml(charMin)}">
+    <span class="letter-type">${escapeHtml(type)}</span>
+    <div class="letter-display"><span>${escapeHtml(charMaj)}</span><span>${escapeHtml(charMin)}</span></div>
+    <div class="pronunciation">${escapeHtml(pronunciation)}</div>
+    <div class="example">${escapeHtml(example)}</div>
+    ${examplesHTML ? `<div class="word-examples">${examplesHTML}</div>` : ''}
+</div>`;
+            }
+        });
+
+         const html = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(pageTitle)}</title>
+    <style>
+        :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; --accent: ${escapeHtml(generalSettings.themeAccent)}; --russe: ${escapeHtml(generalSettings.themeRusse)}; --francais: ${escapeHtml(generalSettings.themeFrancais)}; --card-bg: ${escapeHtml(generalSettings.themeCardBg)}; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: ${escapeHtml(generalSettings.themeBackground)}; color: ${escapeHtml(generalSettings.themeDark)}; }
+        /* Add other base styles from your original file here */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 2rem 0; text-align: center; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
+        .nav-btn.active { background: var(--secondary); }
+        .alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+        .letter-card { background-color: var(--card-bg); border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; }
+        .letter-card.similar { border-left: 4px solid #38a169; } .letter-card.different { border-left: 4px solid #e53e3e; } .letter-card.unique { border-left: 4px solid #d69e2e; }
+        .letter-display { font-size: 3rem; font-weight: bold; color: var(--russe); display:flex; justify-content:space-between; }
+        .pronunciation { font-style: italic; } .word { color: var(--russe); } .translation { color: var(--francais); }
+        .letter-type { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 20px; }
+        .similar .letter-type { background-color: #e6f7eb; color: #38a169; } .different .letter-type { background-color: #fee2e2; color: #e53e3e; } .unique .letter-type { background-color: #fef3c7; color: #d97706; }
+    </style>
+</head>
+<body>
+    <header><div class="container"><h1>${escapeHtml(pageTitle)}</h1><p>${escapeHtml(pageSubtitle)}</p></div></header>
+    <nav><div class="nav-buttons">
+        <a href="index.html" class="nav-btn">🏠 Accueil</a>
+        <a href="alphabet.html" class="nav-btn active">🔤 Alphabet</a>
+        <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
+        <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
+    </div></nav>
+    <main class="container">
+        <h2>L'alphabet complet</h2>
+        <div class="alphabet-grid">${lettersHTML}</div>
+    </main>
+</body>
+</html>`;
+        downloadFile('alphabet.html', html);
+    }
+
+    function generateVocabularyHTML() {
+        const generalSettings = getGeneralSettings();
+        const pageTitle = document.getElementById('vocabPageTitle').value;
+        const categoriesData = document.getElementById('vocabCategories').value;
+        const wordsData = document.getElementById('wordsData').value;
+
+        let categoryFiltersHTML = '<button class="category-filter active" data-category="all">Tous</button>';
+        const categories = categoriesData.split('\n').map(line => {
+            const parts = line.split(',');
+            return { id: parts[0]?.trim(), name: parts[1]?.trim() };
+        }).filter(cat => cat.id && cat.name);
+        categories.forEach(cat => {
+            categoryFiltersHTML += `<button class="category-filter" data-category="${escapeHtml(cat.id)}">${escapeHtml(cat.name)}</button>`;
+        });
+        
+        const vocabularyArray = wordsData.split('\n').filter(row => row.trim() !== '').map(row => {
+            const parts = row.split(';');
+            return {
+                russian: parts[0]?.trim() || '',
+                pronunciation: parts[1]?.trim() || '',
+                translation: parts[2]?.trim() || '',
+                categories: parts[3] ? parts[3].split(',').map(c => c.trim()) : ['basics'],
+                nuance: parts[4]?.trim() || ''
+            };
+        });
+
+        const html = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(pageTitle)}</title>
+    <style>
+        :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; --accent: ${escapeHtml(generalSettings.themeAccent)}; --russe: ${escapeHtml(generalSettings.themeRusse)}; --francais: ${escapeHtml(generalSettings.themeFrancais)}; --card-bg: ${escapeHtml(generalSettings.themeCardBg)}; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: ${escapeHtml(generalSettings.themeBackground)}; color: ${escapeHtml(generalSettings.themeDark)}; }
+        /* Add other base styles from your original file here */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
+        .nav-btn.active { background: var(--secondary); }
+        .category-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; justify-content:center; }
+        .category-filter { padding:8px 16px; border:1px solid #ccc; border-radius:20px; cursor:pointer; }
+        .category-filter.active { background:var(--primary); color:white; border-color:var(--primary); }
+        .vocab-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .vocab-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .russian-word { font-size: 1.8rem; color: var(--russe); font-weight: 700; }
+        .pronunciation { font-style: italic; }
+        .translation { font-size: 1.3rem; color: var(--francais); }
+        .hidden-translation, .hidden-russian { filter: blur(5px); user-select: none; }
+        .hidden-translation:hover, .hidden-russian:hover { filter: none; }
+    </style>
+</head>
+<body>
+    <header><div class="container"><h1>${escapeHtml(pageTitle)}</h1></div></header>
+    <nav><div class="nav-buttons">
+        <a href="index.html" class="nav-btn">🏠 Accueil</a>
+        <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
+        <a href="vocabulaire.html" class="nav-btn active">📚 Vocabulaire</a>
+        <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
+    </div></nav>
+    <main class="container">
+        <div class="category-filters">${categoryFiltersHTML}</div>
+        <div class="vocab-container" id="vocab-container"></div>
+    </main>
+    <script>
+        const vocabulary = ${JSON.stringify(vocabularyArray)};
+        
+        function displayWords(filter = 'all') {
+            const container = document.getElementById('vocab-container');
+            container.innerHTML = '';
+            const wordsToDisplay = filter === 'all' ? vocabulary : vocabulary.filter(w => w.categories.includes(filter));
+            
+            wordsToDisplay.forEach(word => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = \`
+                    <div class="russian-word">\${word.russian}</div>
+                    <div class="pronunciation">\${word.pronunciation}</div>
+                    <div class="translation">\${word.translation}</div>
+                    \${word.nuance ? \`<p><em>Nuance: \${word.nuance}</em></p>` : ''}
+                \`;
+                container.appendChild(card);
+            });
+        }
+
+        document.querySelectorAll('.category-filter').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                displayWords(button.dataset.category);
+            });
+        });
+
+        displayWords(); // Initial display
+    </script>
+</body>
+</html>`;
+        downloadFile('vocabulaire.html', html);
+    }
+    
+    function generateCourseHTML() {
+        const generalSettings = getGeneralSettings();
+        const pageTitle = document.getElementById('coursePageTitle').value;
+        const daysDataRaw = document.getElementById('daysData').value;
+        const daysBlocks = daysDataRaw.split('__DAY_SEPARATOR__');
+
+        let dayContentsHTML = '';
+        daysBlocks.forEach(dayBlock => {
+            const lines = dayBlock.trim().split('\n');
+            if (lines.length < 1) return;
+
+            const headerLine = lines.shift();
+            const [dayNum, dayTitle, dayObjective] = headerLine.split(';');
+            
+            dayContentsHTML += `<div id="jour${escapeHtml(dayNum)}" class="tab-content"><div class="card"><div class="card-header"><h2>Jour ${escapeHtml(dayNum)}: ${escapeHtml(dayTitle)}</h2></div><div class="card-body">`;
+            dayContentsHTML += `<div class="section"><h3 class="section-title">Objectif du jour</h3><p>${escapeHtml(dayObjective)}</p></div>`;
+
+            lines.forEach(sectionLine => {
+                 const [typeAndTitle, ...dataParts] = sectionLine.split('|');
+                 const [type, title] = typeAndTitle.split(':');
+                 const contentData = dataParts.join('|').trim();
+
+                 dayContentsHTML += `<div class="section"><h3 class="section-title">${escapeHtml(title)}</h3>`;
+                 
+                 switch(type.trim().toUpperCase()) {
+                     case 'TEXT_SECTION':
+                         dayContentsHTML += `<p>${escapeHtml(contentData)}</p>`;
+                         break;
+                     case 'LETTER_GRID':
+                         const letters = contentData.split('|').map(l => l.split(','));
+                         dayContentsHTML += `<div class="letter-grid">`;
+                         letters.forEach(l => {
+                             if(l.length >= 3) dayContentsHTML += `<div class="letter-item"><div class="cyrillic"><span>${escapeHtml(l[0])}</span><span>${escapeHtml(l[1])}</span></div><div class="pronunciation">${escapeHtml(l[2])}</div><div class="example">${escapeHtml(l[3]||'')}</div></div>`;
+                         });
+                         dayContentsHTML += `</div>`;
+                         break;
+                    // Add more cases for VOCAB_LIST, EXERCISE, etc.
+                 }
+                 dayContentsHTML += `</div>`;
+            });
+
+            dayContentsHTML += `</div></div></div>`;
+        });
+        
+        const html = `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(pageTitle)}</title>
+    <style>
+        :root { --primary: ${escapeHtml(generalSettings.themePrimary)}; --secondary: ${escapeHtml(generalSettings.themeSecondary)}; /* ...etc */ }
+        body { font-family: 'Segoe UI', sans-serif; background-color: ${escapeHtml(generalSettings.themeBackground)}; color: ${escapeHtml(generalSettings.themeDark)}; }
+        /* Add all the complex styles from your original file */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
+        .nav-btn.active { background: var(--secondary); }
+        .content-wrapper { display: flex; }
+        .sidebar-nav { width: 250px; flex-shrink: 0; padding-right: 20px; }
+        .main-content { flex-grow: 1; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .card-header { padding-bottom: 15px; margin-bottom: 20px; border-bottom: 1px solid #eee; }
+        .card-header h2 { font-size: 1.5rem; color: var(--primary); }
+        .section-title { font-size: 1.25rem; color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <header><div class="container"><h1>${escapeHtml(pageTitle)}</h1></div></header>
+    <nav><div class="nav-buttons">
+        <a href="index.html" class="nav-btn">🏠 Accueil</a>
+        <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
+        <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
+        <a href="cours-21-jours.html" class="nav-btn active">📅 Programme 21 jours</a>
+    </div></nav>
+    <div class="container content-wrapper">
+        <nav class="sidebar-nav">
+            <!-- Sidebar content will be generated here -->
+        </nav>
+        <main class="main-content">
+            ${dayContentsHTML}
+        </main>
+    </div>
+    <script>
+        // Add the complex JavaScript for sidebar navigation, progress tracking, etc.
+    </script>
+</body>
+</html>`;
+        downloadFile('cours-21-jours.html', html);
+    }
+</script>
+
+</body>
+</html>
