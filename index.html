@@ -44,6 +44,74 @@
             background-color: #059669;
         }
     </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-800 to-indigo-700 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Language Learning Website Generator</h1>
+            <p class="text-lg md:text-xl text-blue-200">Create a beautiful, four-page language learning website instantly. Just provide your data!</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Instructions Section -->
+        <section id="instructions" class="bg-white p-8 rounded-xl shadow-md mb-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200 pb-4">How It Works</h2>
+            <p class="mb-4 text-gray-600">This tool generates a complete website from the data you provide. Below are four text boxes, one for each page of your future website. They are pre-filled with example data to show you the required format.</p>
+            <p class="mb-6">Simply edit the content in the text boxes with your own language data, making sure to keep the same JSON structure. When you're ready, click the "Generate" button at the bottom.</p>
+        </section>
+
+        <!-- Data Input Section -->
+        <section id="data-input" class="space-y-10">
+            <!-- Main Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">1. Main Page Data (index.html)</h3>
+                <p class="mb-4 text-gray-600">Provide general information about the language and an overview of the learning program.</p>
+                <textarea id="mainData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Alphabet Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">2. Alphabet Page Data (alphabet.html)</h3>
+                 <p class="mb-4 text-gray-600">Provide the letters of the alphabet, including pronunciation, examples, and categories.</p>
+                <textarea id="alphabetData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Vocabulary Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">3. Vocabulary Page Data (vocabulary.html)</h3>
+                <p class="mb-4 text-gray-600">Provide vocabulary words with pronunciation, translation, categories, and optional nuances.</p>
+                <textarea id="vocabularyData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Lessons Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">4. Lessons Page Data (lessons.html)</h3>
+                 <p class="mb-4 text-gray-600">Provide the content for your structured lessons (e.g., a 21-day program).</p>
+                <textarea id="lessonsData" class="textarea-input"></textarea>
+            </div>
+        </section>
+
+        <!-- Generation Button and Output -->
+        <section id="generation" class="text-center py-12">
+            <button onclick="generateWebsite()" class="bg-blue-600 text-white text-2xl font-bold py-4 px-10 rounded-xl hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-lg">
+                🚀 Generate My Website!
+            </button>
+            <div id="output" class="mt-10 flex flex-wrap justify-center gap-4"></div>
+            <div id="error" class="mt-6 text-red-600 font-semibold"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Language Learning Website Generator. Created with Gemini.</p>
+        </div>
+    </footer>
 
     <script>
     // --- TEMPLATES FOR THE GENERATED HTML FILES ---
@@ -634,73 +702,5 @@
         }
     }
     </script>
-</head>
-<body class="bg-gray-50 text-gray-800">
-
-    <!-- Header Section -->
-    <header class="bg-gradient-to-r from-blue-800 to-indigo-700 text-white shadow-lg">
-        <div class="container mx-auto px-6 py-12 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Language Learning Website Generator</h1>
-            <p class="text-lg md:text-xl text-blue-200">Create a beautiful, four-page language learning website instantly. Just provide your data!</p>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-6 py-12">
-
-        <!-- Instructions Section -->
-        <section id="instructions" class="bg-white p-8 rounded-xl shadow-md mb-12">
-            <h2 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200 pb-4">How It Works</h2>
-            <p class="mb-4 text-gray-600">This tool generates a complete website from the data you provide. Below are four text boxes, one for each page of your future website. They are pre-filled with example data to show you the required format.</p>
-            <p class="mb-6">Simply edit the content in the text boxes with your own language data, making sure to keep the same JSON structure. When you're ready, click the "Generate" button at the bottom.</p>
-        </section>
-
-        <!-- Data Input Section -->
-        <section id="data-input" class="space-y-10">
-            <!-- Main Page Data -->
-            <div class="bg-white p-8 rounded-xl shadow-md">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4">1. Main Page Data (index.html)</h3>
-                <p class="mb-4 text-gray-600">Provide general information about the language and an overview of the learning program.</p>
-                <textarea id="mainData" class="textarea-input"></textarea>
-            </div>
-
-            <!-- Alphabet Page Data -->
-            <div class="bg-white p-8 rounded-xl shadow-md">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4">2. Alphabet Page Data (alphabet.html)</h3>
-                 <p class="mb-4 text-gray-600">Provide the letters of the alphabet, including pronunciation, examples, and categories.</p>
-                <textarea id="alphabetData" class="textarea-input"></textarea>
-            </div>
-
-            <!-- Vocabulary Page Data -->
-            <div class="bg-white p-8 rounded-xl shadow-md">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4">3. Vocabulary Page Data (vocabulary.html)</h3>
-                <p class="mb-4 text-gray-600">Provide vocabulary words with pronunciation, translation, categories, and optional nuances.</p>
-                <textarea id="vocabularyData" class="textarea-input"></textarea>
-            </div>
-
-            <!-- Lessons Page Data -->
-            <div class="bg-white p-8 rounded-xl shadow-md">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4">4. Lessons Page Data (lessons.html)</h3>
-                 <p class="mb-4 text-gray-600">Provide the content for your structured lessons (e.g., a 21-day program).</p>
-                <textarea id="lessonsData" class="textarea-input"></textarea>
-            </div>
-        </section>
-
-        <!-- Generation Button and Output -->
-        <section id="generation" class="text-center py-12">
-            <button onclick="generateWebsite()" class="bg-blue-600 text-white text-2xl font-bold py-4 px-10 rounded-xl hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-lg">
-                🚀 Generate My Website!
-            </button>
-            <div id="output" class="mt-10 flex flex-wrap justify-center gap-4"></div>
-            <div id="error" class="mt-6 text-red-600 font-semibold"></div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-12">
-        <div class="container mx-auto px-6 py-8 text-center">
-            <p>&copy; 2024 Language Learning Website Generator. Created with Gemini.</p>
-        </div>
-    </footer>
 </body>
 </html>
