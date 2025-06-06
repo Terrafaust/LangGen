@@ -3,748 +3,704 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Language Learning Site Generator</title>
+    <title>Language Learning Website Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
-        .tab-button {
-            transition: color 0.2s, border-color 0.2s;
-            border-bottom: 2px solid transparent;
+        .textarea-input {
+            width: 100%;
+            height: 250px; /* Increased height */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #D1D5DB;
+            font-family: monospace;
+            font-size: 0.875rem;
+            line-height: 1.5; /* Improved line spacing */
+            color: #1F2937;
+            background-color: #F9FAFB;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .tab-button.active {
-            color: #4f46e5; /* indigo-600 */
-            border-color: #4f46e5; /* indigo-600 */
+        .textarea-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
         }
-        .form-section {
-            display: none;
+        .generated-link {
+            display: inline-block;
+            background-color: #10B981;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
         }
-        .form-section.active {
-            display: block;
-        }
-        .help-text {
-            font-size: 0.75rem;
-            color: #6b7280;
-            white-space: pre-line;
-            margin-top: 4px;
-        }
-         input[type="color"] {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 2.75rem; /* w-11 */
-            height: 2.5rem; /* h-10 */
-            padding: 0;
-            border: none;
-            border-radius: 0 0.5rem 0.5rem 0; /* rounded-r-lg */
-            cursor: pointer;
-        }
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-        input[type="color"]::-webkit-color-swatch {
-            border: none;
-            border-radius: 0 0.5rem 0.5rem 0;
+        .generated-link:hover {
+            background-color: #059669;
         }
     </style>
-</head>
-<body class="bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100">
 
-    <div class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden my-8">
-        <header class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sm:p-8 text-white">
-            <h1 class="text-3xl sm:text-4xl font-bold text-center">Générateur de Site d'Apprentissage de Langues</h1>
-            <p class="text-center text-indigo-200 mt-2">Créez vos propres sites d'apprentissage facilement!</p>
-        </header>
+    <script>
+    // --- TEMPLATES FOR THE GENERATED HTML FILES ---
 
-        <nav class="flex border-b bg-gray-50 overflow-x-auto">
-            <button onclick="showTab('general')" class="tab-button active flex-shrink-0 py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="general">Général</button>
-            <button onclick="showTab('index')" class="tab-button flex-shrink-0 py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="index">Index</button>
-            <button onclick="showTab('alphabet')" class="tab-button flex-shrink-0 py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="alphabet">Alphabet</button>
-            <button onclick="showTab('vocabulary')" class="tab-button flex-shrink-0 py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="vocabulary">Vocabulaire</button>
-            <button onclick="showTab('course')" class="tab-button flex-shrink-0 py-3 px-4 sm:px-6 font-medium text-sm sm:text-base focus:outline-none" data-tab="course">Cours 21 Jours</button>
-        </nav>
-
-        <main class="p-6 sm:p-8">
-            <!-- General Settings -->
-            <div id="general-section" class="form-section active">
-                <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Paramètres Généraux</h2>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="languageName">Nom du Site (e.g., "Apprendre l'Espagnol")</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="languageName" type="text" value="Apprendre le Russe">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="targetLanguage">Langue Cible (e.g., "Espagnol")</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="targetLanguage" type="text" value="Russe">
-                    </div>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nativeLanguage">Langue Native (e.g., "Français")</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="nativeLanguage" type="text" value="Français">
-                    </div>
-
-                    <h3 class="text-lg font-semibold text-gray-700 mt-6 mb-2">Couleurs du drapeau (style en-tête)</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor1">Couleur 1</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor1" type="text" value="#FFFFFF"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#FFFFFF"></div></div>
-                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor2">Couleur 2</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor2" type="text" value="#0039A6"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#0039A6"></div></div>
-                        <div><label class="block text-gray-700 text-sm font-bold mb-1" for="flagColor3">Couleur 3</label><div class="flex items-center"><input class="shadow-sm border rounded-l w-full py-2 px-3 text-gray-700" id="flagColor3" type="text" value="#D52B1E"><input type="color" oninput="this.previousElementSibling.value = this.value" value="#D52B1E"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Index Settings -->
-            <div id="index-section" class="form-section">
-                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page d'Accueil (index.html)</h2>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="introTitle">Titre Introduction</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="introTitle" type="text" value="Bienvenue dans votre aventure russe !">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="introParagraph">Paragraphe Introduction</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="introParagraph" rows="3">Découvrez la richesse de la langue russe à travers notre méthode progressive et interactive. De l'alphabet cyrillique aux conversations courantes, nous vous accompagnons à chaque étape de votre apprentissage.</textarea>
-                    </div>
-
-                    <div class="mb-4 mt-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="programOverviewData">Aperçu du Programme (pour l'accordéon)</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="programOverviewData" rows="15">WEEK:Semaine 1 : Les Fondamentaux
-Jour 1 : Introduction à l'alphabet cyrillique (partie 1);Découverte des 10 premières lettres
-Jour 2 : Introduction à l'alphabet cyrillique (partie 2);Apprentissage des lettres suivantes
-Jour 3 : Finalisation de l'alphabet cyrillique;Les dernières lettres
-Jour 4 : Salutations et présentations;Expressions de base pour se saluer
-Jour 5 : Expressions courantes et politesse;Formules de politesse utiles
-Jour 6 : Les nombres de 1 à 20;Apprendre à compter
-Jour 7 : Révision et pratique;Consolidation des acquis
-__WEEK_SEPARATOR__
-WEEK:Semaine 2 : Structures de Base
-Jour 8 : Pronoms personnels et verbe "être";Maîtriser les pronoms
-Jour 9 : Premier groupe de verbes au présent;Conjugaison des verbes en -ать/-ять
-Jour 10 : Second groupe de verbes au présent;Conjugaison des verbes en -ить
-Jour 11 : Questions et réponses de base;Apprendre à poser des questions
-Jour 12 : Les adjectifs de base;Adjectifs courants et leur accord
-Jour 13 : Les adverbes et expressions de temps;Adverbes et jours de la semaine
-Jour 14 : Révision et consolidation;Consolider les acquis
-__WEEK_SEPARATOR__
-WEEK:Semaine 3 : Communication Élargie
-Jour 15 : Exprimer ses goûts et préférences;Dire ce qu'on aime
-Jour 16 : La nourriture et le restaurant;Vocabulaire du restaurant
-Jour 17 : Shopping et achats;Expressions pour faire des achats
-Jour 18 : Orientation et directions;Demander et donner des directions
-Jour 19 : Parler de la météo et des saisons;Décrire le temps qu'il fait
-Jour 20 : Téléphone et communication;Expressions téléphoniques
-Jour 21 : Révision générale et bilan;Consolider tous les acquis</textarea>
-                        <p class="help-text">Commencez une semaine avec "WEEK:Titre de la semaine".
-Séparez les semaines avec "__WEEK_SEPARATOR__".
-Pour chaque jour : Titre du jour;Description du jour</p>
-                    </div>
-                     <div class="mb-4 mt-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="resourcesData">Ressources Complémentaires</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="resourcesData" rows="5">APPS:Anki, Russian Alphabet Mastery, Tandem, Morpheem
-BOOKS:Grammaire russe pour débutants, Histoire de la langue russe
-WEBSITES:RussianPod101, Russie.fr, Wiktionary</textarea>
-                        <p class="help-text">Format: TYPE:Item 1, Item 2, Item 3
-Types valides: APPS, BOOKS, WEBSITES. Chaque type sur une nouvelle ligne.</p>
-                    </div>
-
-                    <button onclick="generateIndexHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
-                        Générer index.html
-                    </button>
-                </div>
-            </div>
-
-            <!-- Alphabet Settings -->
-            <div id="alphabet-section" class="form-section">
-                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Alphabet</h2>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="alphabetPageTitle">Titre Page Alphabet</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="alphabetPageTitle" type="text" value="L'Alphabet Russe">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="alphabetPageSubtitle">Sous-titre Page</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="alphabetPageSubtitle" type="text" value="Un guide simple pour apprendre le cyrillique">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lettersData">Données des Lettres</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="lettersData" rows="15">А;а;[a];comme dans "papa";Identique;ананас,[ananas],ananas|автобус,[aftabus],bus
-К;к;[k];comme dans "képi";Identique;кот,[kot],chat|кофе,[kofié],café
-М;м;[m];comme dans "maman";Identique;мама,[mama],maman|метро,[mitra],métro
-О;о;[o];comme dans "mot";Identique;окно,[akno],fenêtre|дом,[dom],maison
-Т;т;[t];comme dans "ton";Identique;там,[tam],là-bas|стол,[stol],table
-В;в;[v];comme dans "vous";Piège;вода,[vada],eau|вот,[vot],voici
-Н;н;[n];comme dans "non";Piège;нос,[nos],nez|ночь,[notch],nuit
-Р;р;[r];roulé;Piège;рука,[rouka],main|рыба,[ryba],poisson
-С;с;[s];comme dans "savoir";Piège;сок,[sok],jus|суп,[soup],soupe
-У;у;[ou];comme dans "loup";Piège;утро,[outra],matin|ухо,[oukha],oreille
-Х;х;[kh];jota espagnole;Piège;хлеб,[khlièb],pain|хорошо,[kharacho],bien
-Б;б;[b];comme dans "bon";Unique;брат,[brat],frère|банан,[banan],banane</textarea>
-                        <p class="help-text">Format par ligne : Maj;min;[prononciation];comme "exemple";Type;mot1,[pron1],trad1|mot2,[pron2],trad2
-Types: Identique, Piège, Unique. Les exemples de mots sont optionnels.</p>
-                    </div>
-                    <button onclick="generateAlphabetHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
-                        Générer alphabet.html
-                    </button>
-                </div>
-            </div>
-
-            <!-- Vocabulary Settings -->
-            <div id="vocabulary-section" class="form-section">
-                <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Vocabulaire</h2>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="vocabPageTitle">Titre Page Vocabulaire</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="vocabPageTitle" type="text" value="Vocabulaire Russe">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="vocabCategories">Catégories</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="vocabCategories" rows="5">basics,Bases
-greetings,Salutations
-numbers,Nombres
-food,Nourriture
-travel,Voyage</textarea>
-                        <p class="help-text">Format par ligne : id,NomAffiché</p>
-                    </div>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="wordsData">Mots de Vocabulaire</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="wordsData" rows="15">здравствуйте;[zdravstvouytié];bonjour (formel);greetings
-до свидания;[da svidaniya];au revoir;greetings
-да;[da];oui;basics
-нет;[niet];non;basics
-мир;[mir];monde / paix;basics;Peut signifier 'monde' (l'univers) ou 'paix'.
-язык;[yazyk];langue / langue (organe);basics;Peut signifier 'langue' (pour parler) ou 'langue' (l'organe).
-вода;[vada];eau;food
-хлеб;[khlièb];pain;food
-один;[adin];un;numbers</textarea>
-                        <p class="help-text">Format par ligne : MotCible;[prononciation];Traduction;catégorie1,catégorie2;Nuance (optionnel)</p>
-                    </div>
-                    <button onclick="generateVocabularyHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
-                        Générer vocabulaire.html
-                    </button>
-                </div>
-            </div>
-
-            <!-- Course Settings -->
-            <div id="course-section" class="form-section">
-                 <div class="mb-8 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-                    <h2 class="text-2xl font-semibold text-indigo-700 mb-6 border-b pb-2">Page Cours 21 Jours</h2>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="coursePageTitle">Titre Page Cours</label>
-                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700" id="coursePageTitle" type="text" value="Cours de Russe en 21 Jours">
-                    </div>
-                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="daysData">Données des Jours</label>
-                        <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 font-mono text-sm" id="daysData" rows="20">1;Découverte de l'Alphabet (Partie 1);Se familiariser avec les dix premières lettres.
-TEXT_SECTION:Introduction|Bienvenue au premier jour !
-LETTER_GRID:Les 10 premières lettres|А,а,[a],papa|Б,б,[b],bon|В,в,[v],vous
-VOCAB_LIST:Vocabulaire de base|да,[da],oui|нет,[niet],non
-EXERCISE:Exercice d'écriture|Tracez chaque lettre 10 fois.
-FOCUS_BOX:Focus Culturel: Origine de l'alphabet|L'alphabet cyrillique tire son nom de Saint Cyrille...
-__DAY_SEPARATOR__
-2;Découverte de l'Alphabet (Partie 2);Apprendre les dix lettres suivantes.
-TEXT_SECTION:Révision|Revoyons les lettres d'hier.
-LETTER_GRID:Les 10 lettres suivantes|Г,г,[g],gare|Д,д,[d],dans
-VOCAB_LIST:Objets courants|дом,[dom],maison|стол,[stol],table
-EXERCISE:Association|Reliez les sons aux lettres.
-FOCUS_BOX:Phonétique: L'akanie|Lorsque "о" n'est pas accentuée, elle se prononce [a]...
-__DAY_SEPARATOR__
-7;Révision Semaine 1;Consolider les acquis.
-TEXT_SECTION:Récapitulatif|Nous avons couvert l'alphabet et les salutations.
-RECAP_LIST:Acquis de la semaine|Alphabet complet|Salutations de base|Nombres 1-10
-EXERCISE:Quiz rapide|Testez vos connaissances de la semaine.
-FOCUS_BOX:Conseils d'étude|Pratiquez 15 minutes chaque jour.
-__DAY_SEPARATOR__
-21;Révision Générale et Bilan;Consolider tous les acquis des trois semaines.
-TEXT_SECTION:Félicitations!|Vous avez terminé le programme de base!
-RECAP_LIST:Compétences acquises|Compréhension orale de base|Expression orale simple|Lecture de textes courts
-EXERCISE:Auto-évaluation|Évaluez vos progrès et identifiez les points à renforcer.
-FOCUS_BOX:Prochaines étapes|Continuez votre apprentissage avec des ressources intermédiaires.</textarea>
-                        <p class="help-text">Séparez chaque jour par "__DAY_SEPARATOR__".
-Format Jour: Numéro;Titre;Objectif
-Format Section: TYPE:Titre(optionnel)|Contenu/Données
-Types: TEXT_SECTION, LETTER_GRID, VOCAB_LIST, NOTE_BOX, FOCUS_BOX, EXERCISE, DIALOGUE, RECAP_LIST
-Exemple DIALOGUE: DIALOGUE:Au restaurant|Client:Je voudrais...,Serveur:Voici...</p>
-                    </div>
-                    <button onclick="generateCourseHTML()" class="mt-6 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200">
-                        Générer cours-21-jours.html
-                    </button>
-                </div>
-            </div>
-        </main>
-        <footer class="p-6 bg-gray-50 border-t text-center">
-            <p class="text-sm text-gray-500">Language Learning Site Generator - Gemini 2024</p>
-        </footer>
-    </div>
-
-<script>
-    // --- UTILITY FUNCTIONS ---
-    function showTab(tabName) {
-        document.querySelectorAll('.form-section').forEach(section => section.classList.remove('active'));
-        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-        document.getElementById(`${tabName}-section`).classList.add('active');
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-    }
-
-    function escapeHtml(unsafe) {
-        if (unsafe === null || unsafe === undefined) return '';
-        return unsafe.toString()
-             .replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;");
-    }
-
-    function downloadFile(filename, content) {
-      const element = document.createElement('a');
-      element.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(content));
-      element.setAttribute('download', filename);
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    }
-
-    // --- TEMPLATE GENERATION LOGIC ---
-
-    function getGeneralSettings() {
-        return {
-            languageName: document.getElementById('languageName').value,
-            targetLanguage: document.getElementById('targetLanguage').value,
-            nativeLanguage: document.getElementById('nativeLanguage').value,
-            flagColor1: document.getElementById('flagColor1').value,
-            flagColor2: document.getElementById('flagColor2').value,
-            flagColor3: document.getElementById('flagColor3').value,
-            themePrimary: '#1e3a8a',
-            themeSecondary: '#c53030',
-            themeAccent: '#5a67d8',
-            themeRusse: '#c53030', 
-            themeFrancais: '#3182ce',
-            themeBackground: '#f0f5ff',
-            themeCardBg: '#ffffff',
-            themeLight: '#f7fafc',
-            themeDark: '#2d3748'
-        };
-    }
-
-    function generateIndexHTML() {
-        const generalSettings = getGeneralSettings();
-        const introTitle = document.getElementById('introTitle').value;
-        const introParagraph = document.getElementById('introParagraph').value;
-        const programData = document.getElementById('programOverviewData').value;
-        const resourcesData = document.getElementById('resourcesData').value;
-
-        // Build Program Overview Accordion HTML
-        let programAccordionHTML = '';
-        const weeks = programData.split('__WEEK_SEPARATOR__');
-        weeks.forEach((weekData, index) => {
-            const lines = weekData.trim().split('\n');
-            const weekTitleLine = lines.shift() || '';
-            const weekTitle = weekTitleLine.replace('WEEK:', '').trim();
-            const weekId = `week${index + 1}`;
-
-            let daysHTML = '';
-            lines.forEach(line => {
-                const [dayTitle, dayDesc] = line.split(';');
-                if (dayTitle && dayDesc) {
-                    daysHTML += `
-                        <div class="day-item">
-                            <div class="day-title">${escapeHtml(dayTitle)}</div>
-                            <div class="day-description">${escapeHtml(dayDesc)}</div>
-                        </div>`;
-                }
-            });
-
-            programAccordionHTML += `
-                <div class="week-section">
-                    <div class="week-header" onclick="toggleWeek('${weekId}')">
-                        <h3>${escapeHtml(weekTitle)}</h3>
-                        <span>▼</span>
-                    </div>
-                    <div class="week-content" id="${weekId}">
-                        ${daysHTML}
-                    </div>
-                </div>`;
-        });
-        
-        // Build Resources HTML
-        let resourcesHTML = '';
-        const resourceLines = resourcesData.trim().split('\n');
-        const resourcesMap = {
-            APPS: { icon: '📱', title: 'Applications Recommandées', items: '' },
-            BOOKS: { icon: '📖', title: 'Livres et Manuels', items: '' },
-            WEBSITES: { icon: '🌐', title: 'Sites Web', items: '' }
-        };
-
-        resourceLines.forEach(line => {
-            const [type, itemsStr] = line.split(':');
-            if (type && itemsStr && resourcesMap[type.toUpperCase()]) {
-                resourcesMap[type.toUpperCase()].items = itemsStr;
-            }
-        });
-
-        Object.values(resourcesMap).forEach(resource => {
-            if (resource.items) {
-                resourcesHTML += `
-                    <div class="feature-card">
-                        <div class="feature-icon">${resource.icon}</div>
-                        <h3>${escapeHtml(resource.title)}</h3>
-                        <p>${escapeHtml(resource.items)}</p>
-                    </div>`;
-            }
-        });
-
-
-        const html = \`
+    // Template for index.html
+    const mainTemplate = (data) => `
 <!DOCTYPE html>
-<html lang="\${escapeHtml(generalSettings.nativeLanguage.slice(0, 2).toLowerCase())}">
+<html lang="${data.lang || 'en'}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>\${escapeHtml(generalSettings.languageName)} - Guide Complet</title>
+    <title>${data.title}</title>
     <style>
-        :root {
-            --primary: \${escapeHtml(generalSettings.themePrimary)};
-            --secondary: \${escapeHtml(generalSettings.themeSecondary)};
-            --accent: \${escapeHtml(generalSettings.themeAccent)};
-            --light: \${escapeHtml(generalSettings.themeLight)};
-            --dark: \${escapeHtml(generalSettings.themeDark)};
-            --background: \${escapeHtml(generalSettings.themeBackground)};
-        }
+        :root { --primary: #1e3a8a; --secondary: #c53030; --accent: #5a67d8; --light: #f7fafc; --dark: #2d3748; --background: #f0f5ff; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background: var(--background); }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         header h1 { font-size: 2.5rem; margin-bottom: 15px; }
-        .flag-colors { display: flex; height: 10px; margin: 20px auto 0; width: 200px; border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .flag-color-1 { background: \${escapeHtml(generalSettings.flagColor1)}; flex: 1; }
-        .flag-color-2 { background: \${escapeHtml(generalSettings.flagColor2)}; flex: 1; }
-        .flag-color-3 { background: \${escapeHtml(generalSettings.flagColor3)}; flex: 1; }
         .navigation { background: white; padding: 20px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
         .nav-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .nav-btn { background: var(--primary); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; }
+        .nav-btn { background: var(--primary); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 500; transition: all 0.3s ease; border: none; cursor: pointer; }
         .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
         .nav-btn.active { background: var(--secondary); }
-        .main-content { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; margin-bottom: 30px; }
-        .intro-section h2, .program-overview h2, #ressources h2 { color: var(--primary); font-size: 2rem; text-align:center; margin-bottom: 20px; }
-        .intro-section p { font-size: 1.1rem; max-width: 800px; margin: 0 auto 30px; text-align:center; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .main-content { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 30px; margin-bottom: 30px; }
+        .intro-section { text-align: center; margin-bottom: 40px; }
+        .intro-section h2 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .intro-section p { font-size: 1.1rem; max-width: 800px; margin: 0 auto 30px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
         .feature-card { background: var(--light); padding: 30px; border-radius: 10px; text-align: center; transition: transform 0.3s ease; }
         .feature-card:hover { transform: translateY(-5px); }
         .feature-icon { font-size: 3rem; margin-bottom: 20px; }
         .feature-card h3 { color: var(--primary); margin-bottom: 15px; }
-        .week-section { background: white; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
-        .week-header { background: var(--primary); color: white; padding: 15px 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .week-content { padding: 20px 25px; display: none; }
-        .week-content.active { display: block; }
-        .day-item { padding: 15px; border-bottom: 1px solid #e2e8f0; } .day-item:last-child { border-bottom: none; }
-        .day-title { font-weight: 600; color: var(--primary); }
         footer { background: var(--primary); color: white; text-align: center; padding: 30px 0; margin-top: 50px; }
+        @media (max-width: 768px) {
+            .nav-buttons { flex-direction: column; align-items: center; }
+            .nav-btn { width: 80%; text-align: center; }
+            header h1 { font-size: 2rem; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>\${escapeHtml(generalSettings.languageName)}</h1>
-            <p>Votre guide complet pour maîtriser la langue \${escapeHtml(generalSettings.targetLanguage.toLowerCase())}</p>
-            <div class="flag-colors"><div class="flag-color-1"></div><div class="flag-color-2"></div><div class="flag-color-3"></div></div>
+            <h1>${data.header.title}</h1>
+            <p>${data.header.subtitle}</p>
         </div>
     </header>
     <nav class="navigation">
         <div class="container">
             <div class="nav-buttons">
-                <a href="index.html" class="nav-btn active">🏠 Accueil</a>
+                <a href="index.html" class="nav-btn active">🏠 Home</a>
                 <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
-                <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
-                <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
+                <a href="vocabulary.html" class="nav-btn">📚 Vocabulary</a>
+                <a href="lessons.html" class="nav-btn">📅 Lessons</a>
             </div>
         </div>
     </nav>
-    <main class="container">
-        <div class="main-content">
-            <section class="intro-section">
-                <h2>\${escapeHtml(introTitle)}</h2>
-                <p>\${escapeHtml(introParagraph)}</p>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="feature-icon">🔤</div><h3>Alphabet</h3><p>Maîtrisez l'alphabet avec notre guide interactif.</p><a href="alphabet.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Commencer</a>
+    <main>
+        <div class="container">
+            <div class="main-content">
+                <section class="intro-section">
+                    <h2>${data.welcome.title}</h2>
+                    <p>${data.welcome.text}</p>
+                    <div class="features-grid">
+                        ${data.features.map(feature => `
+                        <div class="feature-card">
+                            <div class="feature-icon">${feature.icon}</div>
+                            <h3>${feature.title}</h3>
+                            <p>${feature.description}</p>
+                            <a href="${feature.link}" class="nav-btn" style="margin-top: 15px; display: inline-block;">${feature.buttonText}</a>
+                        </div>
+                        `).join('')}
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📚</div><h3>Vocabulaire Essentiel</h3><p>Mots classés par thème avec prononciation et traduction.</p><a href="vocabulaire.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Explorer</a>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">📅</div><h3>Programme 21 Jours</h3><p>Un parcours structuré pour acquérir les bases en trois semaines.</p><a href="cours-21-jours.html" class="nav-btn" style="margin-top:15px; display:inline-block;">Découvrir</a>
-                    </div>
-                </div>
-            </section>
-             <section class="program-overview" style="margin-top:50px;">
-                <h2>Aperçu du Programme d'Apprentissage en 21 Jours</h2>
-                \${programAccordionHTML}
-                 <div style="text-align: center; margin-top: 30px;">
-                    <a href="cours-21-jours.html" class="nav-btn" style="background-color: var(--secondary);">Accéder au Programme Complet</a>
-                </div>
-            </section>
-            <section id="ressources" style="margin-top: 50px;">
-                <h2>Ressources Complémentaires</h2>
-                <div class="features-grid">\${resourcesHTML}</div>
-            </section>
+                </section>
+            </div>
         </div>
     </main>
-    <footer><p>&copy; \${new Date().getFullYear()} \${escapeHtml(generalSettings.languageName)}</p></footer>
-    <script>
-        function toggleWeek(weekId) {
-            const content = document.getElementById(weekId);
-            if (!content) return;
-            const header = content.previousElementSibling;
-            const arrow = header.querySelector('span');
-            const isActive = content.classList.contains('active');
-            
-            document.querySelectorAll('.week-content.active').forEach(openContent => {
-                openContent.classList.remove('active');
-                openContent.previousElementSibling.querySelector('span').textContent = '▼';
-            });
-
-            if (!isActive) {
-                content.classList.add('active');
-                arrow.textContent = '▲';
-            }
-        }
-    </script>
+    <footer>
+        <div class="container">
+            <p>${data.footer.text}</p>
+        </div>
+    </footer>
 </body>
-</html>\`;
-        downloadFile('index.html', html);
-    }
-    
-    function generateAlphabetHTML() {
-        const generalSettings = getGeneralSettings();
-        const pageTitle = document.getElementById('alphabetPageTitle').value;
-        const pageSubtitle = document.getElementById('alphabetPageSubtitle').value;
-        const lettersData = document.getElementById('lettersData').value;
+</html>`;
 
-        let lettersHTML = '';
-        const letterRows = lettersData.split('\n').filter(row => row.trim() !== '');
-        letterRows.forEach(row => {
-            const parts = row.split(';');
-            if (parts.length >= 5) {
-                const [charMaj, charMin, pronunciation, example, type, wordExamplesStr = ''] = parts;
-                let examplesHTML = '';
-                if (wordExamplesStr) {
-                    examplesHTML = wordExamplesStr.split('|').map(ex => {
-                        const [word, pron, trans] = ex.split(',');
-                        if (!word || !pron || !trans) return '';
-                        return \`<div class="word-example"><span class="word">\${escapeHtml(word)}</span> <span class="pronunciation">\${escapeHtml(pron)}</span> <span class="translation">- \${escapeHtml(trans)}</span></div>\`;
-                    }).join('');
-                }
-                const cardClass = type.toLowerCase() === 'identique' ? 'similar' : type.toLowerCase() === 'piège' ? 'different' : 'unique';
-                lettersHTML += \`
-<div class="letter-card \${cardClass}" data-letter="\${escapeHtml(charMaj)} \${escapeHtml(charMin)}">
-    <span class="letter-type">\${escapeHtml(type)}</span>
-    <div class="letter-display"><span>\${escapeHtml(charMaj)}</span><span>\${escapeHtml(charMin)}</span></div>
-    <div class="pronunciation">\${escapeHtml(pronunciation)}</div>
-    <div class="example">\${escapeHtml(example)}</div>
-    \${examplesHTML ? \`<div class="word-examples">\${examplesHTML}</div>\` : ''}
-</div>\`;
-            }
-        });
-
-         const html = \`
+    // Template for alphabet.html
+    const alphabetTemplate = (data) => `
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="${data.lang || 'en'}">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.title}</title>
     <style>
-        :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --card-bg: \${escapeHtml(generalSettings.themeCardBg)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--dark); }
+        :root { --primary: #1e3a8a; --secondary: #c53030; --accent: #5a67d8; --light: #f7fafc; --dark: #2d3748; --language-color: #c53030; --translation-color: #3182ce; --background: #f0f5ff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: var(--dark); background: var(--background); }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 2rem 0; text-align: center; }
-        .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
-        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 2rem 0; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .navigation { background: white; padding: 15px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: all 0.3s ease; font-size: 0.9rem; }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
         .nav-btn.active { background: var(--secondary); }
-        .alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-        .letter-card { background-color: var(--card-bg); border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; }
-        .letter-card.similar { border-left: 4px solid #38a169; } .letter-card.different { border-left: 4px solid #e53e3e; } .letter-card.unique { border-left: 4px solid #d69e2e; }
-        .letter-display { font-size: 3rem; font-weight: bold; color: var(--russe); display:flex; justify-content:space-between; }
-        .pronunciation { font-style: italic; } .word { color: var(--russe); font-weight:bold; } .translation { color: var(--francais); }
-        .letter-type { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 20px; }
-        .similar .letter-type { background-color: #e6f7eb; color: #38a169; } .different .letter-type { background-color: #fee2e2; color: #e53e3e; } .unique .letter-type { background-color: #fef3c7; color: #d97706; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 2rem; color: var(--primary); margin: 2rem 0 1rem; border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; }
+        .alphabet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .letter-card { background-color: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); padding: 1.5rem; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; overflow: hidden; }
+        .letter-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .letter-display { font-size: 3rem; font-weight: bold; color: var(--language-color); margin-bottom: 1rem; display: flex; justify-content: space-between; }
+        .pronunciation { font-size: 1.2rem; color: var(--dark); font-style: italic; margin-bottom: 0.5rem; }
+        .example { font-size: 1.1rem; color: var(--dark); margin-bottom: 0.5rem; }
+        .word-examples { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; }
+        .word-example { margin-bottom: 0.5rem; }
+        .word { color: var(--language-color); font-weight: bold; }
+        .word-pronunciation { color: var(--dark); font-style: italic; }
+        .word-translation { color: var(--translation-color); }
+        footer { background-color: var(--primary); color: white; text-align: center; padding: 2rem 0; margin-top: 3rem; }
+        .section-tabs { display: flex; overflow-x: auto; margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #e2e8f0; }
+        .section-tab { padding: 0.5rem 1rem; margin-right: 0.5rem; background-color: #e2e8f0; border-radius: 5px 5px 0 0; font-weight: 500; cursor: pointer; white-space: nowrap; }
+        .section-tab.active { background-color: var(--primary); color: white; }
+        .section-content { display: none; }
+        .section-content.active { display: block; }
     </style>
 </head>
 <body>
-    <header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1><p>\${escapeHtml(pageSubtitle)}</p></div></header>
-    <nav><div class="nav-buttons">
-        <a href="index.html" class="nav-btn">🏠 Accueil</a>
-        <a href="alphabet.html" class="nav-btn active">🔤 Alphabet</a>
-        <a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a>
-        <a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
-    </div></nav>
-    <main class="container"><h2>L'alphabet complet</h2><div class="alphabet-grid">\${lettersHTML}</div></main>
-</body></html>\`;
-        downloadFile('alphabet.html', html);
-    }
-
-    function generateVocabularyHTML() {
-        const generalSettings = getGeneralSettings();
-        const pageTitle = document.getElementById('vocabPageTitle').value;
-        const categoriesData = document.getElementById('vocabCategories').value;
-        const wordsData = document.getElementById('wordsData').value;
-
-        let categoryFiltersHTML = '<button class="category-filter active" data-category="all">Tous</button>';
-        const categories = categoriesData.split('\n').map(line => {
-            const parts = line.split(','); return { id: parts[0]?.trim(), name: parts[1]?.trim() };
-        }).filter(cat => cat.id && cat.name);
-        categories.forEach(cat => { categoryFiltersHTML += \`<button class="category-filter" data-category="\${escapeHtml(cat.id)}">\${escapeHtml(cat.name)}</button>\`; });
+    <header>
+        <div class="container">
+            <h1>${data.pageTitle}</h1>
+            <p>${data.pageSubtitle}</p>
+        </div>
+    </header>
+    <nav class="navigation">
+        <div class="container">
+            <div class="nav-buttons">
+                 <a href="index.html" class="nav-btn">🏠 Home</a>
+                <a href="alphabet.html" class="nav-btn active">🔤 Alphabet</a>
+                <a href="vocabulary.html" class="nav-btn">📚 Vocabulary</a>
+                <a href="lessons.html" class="nav-btn">📅 Lessons</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="section-tabs">
+            <div class="section-tab active" onclick="showSection('all')">All Letters</div>
+            ${Object.keys(data.categories).map(key => `
+            <div class="section-tab" onclick="showSection('${key}')">${data.categories[key]}</div>
+            `).join('')}
+        </div>
         
-        const vocabularyArray = wordsData.split('\n').filter(row => row.trim() !== '').map(row => {
-            const parts = row.split(';');
-            return { russian: parts[0]?.trim() || '', pronunciation: parts[1]?.trim() || '', translation: parts[2]?.trim() || '', categories: parts[3] ? parts[3].split(',').map(c => c.trim()) : ['basics'], nuance: parts[4]?.trim() || '' };
-        });
+        <section id="all" class="section-content active">
+            <h2>The Complete Alphabet</h2>
+            <div class="alphabet-grid">
+            ${data.letters.map(letter => `
+                <div class="letter-card" style="border-left: 4px solid ${letter.categoryColor || '#5a67d8'};">
+                    <div class="letter-display">
+                        <span>${letter.upper}</span>
+                        <span>${letter.lower}</span>
+                    </div>
+                    <div class="pronunciation">${letter.pronunciation}</div>
+                    <div class="example">${letter.example}</div>
+                    ${letter.words ? `
+                    <div class="word-examples">
+                        ${letter.words.map(word => `
+                        <div class="word-example">
+                            <span class="word">${word.word}</span>
+                            <span class="word-pronunciation">${word.pronunciation}</span>
+                            <span class="word-translation">- ${word.translation}</span>
+                        </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                </div>`).join('')}
+            </div>
+        </section>
 
-        const html = \`
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
-<style>
-    :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --card-bg: \${escapeHtml(generalSettings.themeCardBg)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; }
-    body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--dark); }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
-    .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
-    .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
-    .nav-btn.active { background: var(--secondary); }
-    .category-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; justify-content:center; }
-    .category-filter { padding:8px 16px; border:1px solid #ccc; border-radius:20px; cursor:pointer; }
-    .category-filter.active { background:var(--primary); color:white; border-color:var(--primary); }
-    .vocab-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-    .vocab-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .russian-word { font-size: 1.8rem; color: var(--russe); font-weight: 700; }
-    .pronunciation { font-style: italic; } .translation { font-size: 1.3rem; color: var(--francais); }
-</style>
+        ${Object.keys(data.categories).map(key => `
+        <section id="${key}" class="section-content">
+            <h2>${data.categories[key]}</h2>
+            <div class="alphabet-grid">
+            ${data.letters.filter(l => l.category === key).map(letter => `
+                <div class="letter-card" style="border-left: 4px solid ${letter.categoryColor || '#5a67d8'};">
+                    <div class="letter-display">
+                        <span>${letter.upper}</span>
+                        <span>${letter.lower}</span>
+                    </div>
+                    <div class="pronunciation">${letter.pronunciation}</div>
+                    <div class="example">${letter.example}</div>
+                    ${letter.words ? `
+                    <div class="word-examples">
+                        ${letter.words.map(word => `
+                        <div class="word-example">
+                            <span class="word">${word.word}</span>
+                            <span class="word-pronunciation">${word.pronunciation}</span>
+                            <span class="word-translation">- ${word.translation}</span>
+                        </div>
+                        `).join('')}
+                    </div>
+                    ` : ''}
+                </div>`).join('')}
+            </div>
+        </section>
+        `).join('')}
+    </div>
+    <footer><div class="container"><p>${data.footerText}</p></div></footer>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.section-tab[onclick="showSection(\''+sectionId+'\')]').classList.add('active');
+        }
+    </script>
+</body>
+</html>`;
+
+    // Template for vocabulary.html
+    const vocabularyTemplate = (data) => `
+<!DOCTYPE html>
+<html lang="${data.lang || 'en'}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.title}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1e3a8a; --secondary: #c53030; --accent: #5a67d8; --light: #f7fafc; --dark: #2d3748; --language-color: #c53030; --translation-color: #3182ce; --background: #f0f5ff; --card-bg: #ffffff; --shadow: 0 4px 6px rgba(0, 0, 0, 0.1); --hover-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); --border-radius: 8px; --transition: all 0.3s ease; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; line-height: 1.6; color: var(--dark); background: var(--background); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; box-shadow: var(--shadow); }
+        header h1 { font-size: 2.5rem; text-align: center; margin-bottom: 15px; }
+        .navigation { background: white; padding: 15px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: all 0.3s ease; font-size: 0.9rem; }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
+        .nav-btn.active { background: var(--secondary); }
+        .search-container { margin: 20px 0; display: flex; justify-content: center; }
+        .search-box { width: 80%; max-width: 500px; padding: 12px 20px; border: 2px solid var(--primary); border-radius: 30px; font-size: 1rem; outline: none; transition: var(--transition); background-color: var(--card-bg); color: var(--dark); }
+        .search-box:focus { box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.3); }
+        .category-filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
+        .category-filter { padding: 8px 16px; background: var(--light); border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; transition: var(--transition); color: var(--dark); }
+        .category-filter:hover { background: var(--accent); color: white; }
+        .category-filter.active { background: var(--primary); color: white; }
+        .vocab-container { margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .vocab-card { background: var(--card-bg); border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; }
+        .vocab-card:hover { transform: translateY(-5px); box-shadow: var(--hover-shadow); }
+        .card-body { padding: 20px; flex-grow: 1; }
+        .language-word { font-size: 1.8rem; color: var(--language-color); margin-bottom: 10px; font-weight: 700; font-family: 'Noto Sans', sans-serif; }
+        .pronunciation { font-style: italic; color: var(--dark); margin-bottom: 15px; font-size: 1.1rem; }
+        .translation { font-size: 1.3rem; color: var(--translation-color); margin-bottom: 20px; font-weight: 500; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); }
+        .category-tag { background: var(--accent); color: white; padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; display: inline-block; margin-right: 5px; margin-bottom: 5px; }
+        .nuance { margin-top: 15px; padding: 10px; background: #eef2ff; border-left: 3px solid #6366f1; border-radius: 4px; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
-<header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1></div></header>
-<nav><div class="nav-buttons">
-    <a href="index.html" class="nav-btn">🏠 Accueil</a><a href="alphabet.html" class="nav-btn">🔤 Alphabet</a><a href="vocabulaire.html" class="nav-btn active">📚 Vocabulaire</a><a href="cours-21-jours.html" class="nav-btn">📅 Programme 21 jours</a>
-</div></nav>
-<main class="container">
-    <div class="category-filters">\${categoryFiltersHTML}</div>
-    <div class="vocab-container" id="vocab-container"></div>
-</main>
-<script>
-    const vocabulary = \${JSON.stringify(vocabularyArray)};
-    function displayWords(filter = 'all') {
-        const container = document.getElementById('vocab-container'); container.innerHTML = '';
-        const wordsToDisplay = filter === 'all' ? vocabulary : vocabulary.filter(w => w.categories.includes(filter));
-        wordsToDisplay.forEach(word => {
-            const card = document.createElement('div'); card.className = 'vocab-card';
-            card.innerHTML = \\\`<div class="russian-word">\\\${word.russian}</div><div class="pronunciation">\\\${word.pronunciation}</div><div class="translation">\\\${word.translation}</div>\\\${word.nuance ? \\\`<p style="margin-top:10px;font-size:0.9em;color:#555;"><em>Nuance: \\\${word.nuance}</em></p>\` : ''}\\\`;
-            container.appendChild(card);
-        });
-    }
-    document.querySelectorAll('.category-filter').forEach(button => {
-        button.addEventListener('click', () => {
-            document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            displayWords(button.dataset.category);
-        });
-    });
-    displayWords();
-</script>
-</body></html>\`;
-        downloadFile('vocabulaire.html', html);
-    }
-    
-    function generateCourseHTML() {
-        const generalSettings = getGeneralSettings();
-        const pageTitle = document.getElementById('coursePageTitle').value;
-        const daysDataRaw = document.getElementById('daysData').value;
-        const daysBlocks = daysDataRaw.split('__DAY_SEPARATOR__');
+    <header><div class="container"><h1>${data.header.title}</h1></div></header>
+    <nav class="navigation">
+        <div class="container">
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn">🏠 Home</a>
+                <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
+                <a href="vocabulary.html" class="nav-btn active">📚 Vocabulary</a>
+                <a href="lessons.html" class="nav-btn">📅 Lessons</a>
+            </div>
+        </div>
+    </nav>
+    <main><div class="container">
+        <div class="search-container"><input type="text" class="search-box" id="vocab-search" placeholder="Search for a word..."></div>
+        <div class="category-filters" id="category-filters">
+            <button class="category-filter active" data-category="all">All</button>
+            ${Object.keys(data.categories).map(cat => `<button class="category-filter" data-category="${cat}">${data.categories[cat]}</button>`).join('')}
+        </div>
+        <div class="vocab-container" id="vocab-container"></div>
+    </div></main>
+    <script>
+        const vocabulary = ${JSON.stringify(data.words, null, 2)};
+        const categories = ${JSON.stringify(data.categories, null, 2)};
+        const vocabContainer = document.getElementById('vocab-container');
+        const searchInput = document.getElementById('vocab-search');
+        const filtersContainer = document.getElementById('category-filters');
+        let activeCategory = 'all';
 
-        let dayContentsHTML = ''; let sidebarDays = { 1: [], 2: [], 3: [] };
-        daysBlocks.forEach(dayBlock => {
-            const lines = dayBlock.trim().split('\n'); if (lines.length < 1) return;
-            const headerLine = lines.shift(); const [dayNum, dayTitle, dayObjective] = headerLine.split(';');
-            if (!dayNum || !dayTitle || !dayObjective) return;
-            const weekNum = Math.ceil(parseInt(dayNum) / 7);
-            if (sidebarDays[weekNum]) { sidebarDays[weekNum].push({day: dayNum, title: dayTitle}); }
-
-            dayContentsHTML += \`<div id="jour\${escapeHtml(dayNum)}" class="tab-content"><div class="card"><div class="card-header"><h2>Jour \${escapeHtml(dayNum)}: \${escapeHtml(dayTitle)}</h2></div><div class="card-body">\`;
-            dayContentsHTML += \`<div class="section"><h3 class="section-title">Objectif du jour</h3><p>\${escapeHtml(dayObjective)}</p></div>\`;
-            lines.forEach(sectionLine => {
-                 const [typeAndTitle, ...dataParts] = sectionLine.split('|'); const [type, title] = typeAndTitle.split(':'); const contentData = dataParts.join('|').trim();
-                 dayContentsHTML += \`<div class="section"><h3 class="section-title">\${escapeHtml(title || '')}</h3>\`;
-                 switch(type.trim().toUpperCase()) {
-                     case 'TEXT_SECTION': dayContentsHTML += \`<p>\${escapeHtml(contentData)}</p>\`; break;
-                     case 'LETTER_GRID': const letters = contentData.split('|').map(l=>l.split(',')); dayContentsHTML += \`<div class="letter-grid">\`; letters.forEach(l => { if(l.length >= 3) dayContentsHTML += \`<div class="letter-item"><div class="cyrillic"><span>\${escapeHtml(l[0])}</span><span>\${escapeHtml(l[1])}</span></div><div class="pronunciation">\${escapeHtml(l[2])}</div>\${l[3]?\`<div class="example">\${escapeHtml(l[3])}</div>\`:''}</div>\`; }); dayContentsHTML += \`</div>\`; break;
-                     case 'VOCAB_LIST': const vocabs = contentData.split('|').map(v=>v.split(',')); dayContentsHTML += \`<div class="vocab-list">\`; vocabs.forEach(v => { if(v.length >= 3) dayContentsHTML += \`<div class="vocab-item"><div><div class="term">\${escapeHtml(v[0])}</div><div class="pronunciation">\${escapeHtml(v[1])}</div></div><div class="translation">\${escapeHtml(v[2])}</div></div>\`; }); dayContentsHTML += \`</div>\`; break;
-                     case 'EXERCISE': dayContentsHTML += \`<div class="exercise"><div class="exercise-title">\${escapeHtml(title)}</div><p>\${escapeHtml(contentData)}</p></div>\`; break;
-                     case 'FOCUS_BOX': case 'NOTE_BOX': dayContentsHTML += \`<div class="note-box"><div class="note-title">\${escapeHtml(title)}</div><p>\${escapeHtml(contentData).replace(/\\n/g, '<br>')}</p></div>\`; break;
-                     case 'RECAP_LIST': const items = contentData.split('|'); dayContentsHTML += \`<div class="recap-list"><ul>\`; items.forEach(item => dayContentsHTML += \`<li>\${escapeHtml(item)}</li>\`); dayContentsHTML += \`</ul></div>\`; break;
-                     case 'DIALOGUE': const Dlines = contentData.split('|'); dayContentsHTML += \`<div class="dialogue-box">\`; Dlines.forEach(line => {const [speaker, text] = line.split(':'); dayContentsHTML += \`<div class="dialogue-line"><span class="speaker">\${escapeHtml(speaker)}:</span> <span class="russian">\${escapeHtml(text)}</span></div>\`; }); dayContentsHTML += \`</div>\`; break;
-                 }
-                 dayContentsHTML += \`</div>\`;
+        function displayWords(wordsToDisplay) {
+            vocabContainer.innerHTML = '';
+            wordsToDisplay.forEach(word => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = \`
+                    <div class="card-body">
+                        <div class="language-word">\${word.term}</div>
+                        \${word.pronunciation ? \`<div class="pronunciation">[\${word.pronunciation}]</div>\` : ''}
+                        <div class="translation">\${word.translation}</div>
+                        <div>\${word.categories.map(cat => \`<span class="category-tag">${categories[cat] || cat}</span>\`).join('')}</div>
+                        \${word.nuance ? \`<div class="nuance"><strong>Nuance:</strong> \${word.nuance}</div>\` : ''}
+                    </div>
+                \`;
+                vocabContainer.appendChild(card);
             });
-            dayContentsHTML += \`</div></div></div>\`;
+        }
+
+        function filterAndDisplay() {
+            const searchTerm = searchInput.value.toLowerCase();
+            let filteredWords = vocabulary;
+
+            if (activeCategory !== 'all') {
+                filteredWords = filteredWords.filter(word => word.categories.includes(activeCategory));
+            }
+
+            if (searchTerm) {
+                filteredWords = filteredWords.filter(word => 
+                    word.term.toLowerCase().includes(searchTerm) || 
+                    word.translation.toLowerCase().includes(searchTerm)
+                );
+            }
+            displayWords(filteredWords);
+        }
+
+        searchInput.addEventListener('input', filterAndDisplay);
+        filtersContainer.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                document.querySelector('.category-filter.active').classList.remove('active');
+                e.target.classList.add('active');
+                activeCategory = e.target.dataset.category;
+                filterAndDisplay();
+            }
         });
 
-        let sidebarHTML = '';
-        for (let i = 1; i <= 3; i++) {
-            sidebarHTML += \`<div class="sidebar-week-item"><h4>Semaine \${i}</h4><ul class="sidebar-day-list">\`;
-            sidebarDays[i].forEach(day => { sidebarHTML += \`<li><a href="#jour\${day.day}" onclick="openTab('jour\${day.day}')">\${day.title}</a></li>\`; });
-            sidebarHTML += \`</ul></div>\`;
+        displayWords(vocabulary);
+    </script>
+</body>
+</html>`;
+
+    // Template for lessons.html
+    const lessonsTemplate = (data) => `
+<!DOCTYPE html>
+<html lang="${data.lang || 'en'}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${data.title}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1e3a8a; --secondary: #c53030; --accent: #5a67d8; --light: #f7fafc; --dark: #2d3748; --success: #38a169; --warning: #d69e2e; --info: #3182ce; --language-color: #c53030; --translation-color: #3182ce; --bg-primary: #ffffff; --bg-secondary: #f8fafc; --text-primary: #2d3748; --border-color: #e2e8f0; --header-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--text-primary); background: #f0f5ff; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; box-shadow: var(--header-shadow); }
+        header h1 { font-size: 2.5rem; }
+        .navigation { background: white; padding: 15px 0; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .nav-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 500; transition: all 0.3s ease; }
+        .nav-btn:hover { background: var(--accent); transform: translateY(-2px); }
+        .nav-btn.active { background: var(--secondary); }
+        .content-wrapper { display: flex; gap: 30px; }
+        .sidebar-nav { width: 280px; flex-shrink: 0; position: sticky; top: 20px; align-self: flex-start; }
+        .sidebar-nav h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.2rem; }
+        .sidebar-day-list { list-style: none; background: var(--bg-primary); border-radius: 8px; box-shadow: var(--header-shadow); overflow: hidden; }
+        .sidebar-day-btn { display: block; width: 100%; padding: 12px 20px; text-align: left; background: transparent; border: none; cursor: pointer; font-size: 1rem; color: var(--text-primary); transition: all 0.3s ease; border-bottom: 1px solid var(--border-color); }
+        .sidebar-day-btn:hover { background: #eef2ff; }
+        .sidebar-day-btn.active { background: var(--accent); color: white; font-weight: 600; }
+        .main-content { flex-grow: 1; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .card { background: var(--bg-primary); border-radius: 12px; box-shadow: var(--header-shadow); margin-bottom: 30px; overflow: hidden; }
+        .card-header { padding: 20px; background: var(--primary); color: white; }
+        .card-header h2 { font-size: 1.5rem; }
+        .card-body { padding: 25px; }
+        .section-title { font-size: 1.25rem; color: var(--primary); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+        .note-box { background: #e6fffa; border-left: 4px solid var(--info); padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .vocab-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin-top: 15px; }
+        .vocab-item { background: var(--bg-secondary); padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent); }
+        .term { font-weight: bold; color: var(--language-color); }
+        .dialogue-box { background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; margin-top: 15px; }
+        .dialogue-line { margin-bottom: 12px; }
+        .speaker { font-weight: bold; }
+        .language-text { color: var(--language-color); }
+        .translation-text { color: var(--translation-color); font-style: italic; font-size: 0.95em; }
+        @media (max-width: 900px) {
+            .content-wrapper { flex-direction: column; }
+            .sidebar-nav { position: static; width: 100%; }
         }
-        
-        const html = \`<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>\${escapeHtml(pageTitle)}</title>
-<style>
-    :root { --primary: \${escapeHtml(generalSettings.themePrimary)}; --secondary: \${escapeHtml(generalSettings.themeSecondary)}; --accent: \${escapeHtml(generalSettings.themeAccent)}; --russe: \${escapeHtml(generalSettings.themeRusse)}; --francais: \${escapeHtml(generalSettings.themeFrancais)}; --background: \${escapeHtml(generalSettings.themeBackground)}; --dark: \${escapeHtml(generalSettings.themeDark)}; --card-bg: white; --text-primary: var(--dark); --border-color: #e2e8f0; --success: #38a169; --warning: #d69e2e; --info: #3182ce; }
-    body { font-family: 'Segoe UI', sans-serif; background-color: var(--background); color: var(--text-primary); }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    header { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 30px 0; text-align: center; }
-    .nav-buttons { display: flex; justify-content: center; gap: 15px; padding: 15px 0; background:white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px;}
-    .nav-btn { background: var(--primary); color: white; padding: 10px 20px; text-decoration: none; border-radius: 6px; }
-    .nav-btn.active { background: var(--secondary); }
-    .content-wrapper { display: flex; gap:30px; } .sidebar-nav { width: 250px; flex-shrink: 0; } .main-content { flex-grow: 1; }
-    .card { background: var(--card-bg); padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
-    .card-header { padding-bottom: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-    .card-header h2 { font-size: 1.5rem; color: var(--primary); }
-    .section { margin-bottom: 25px; } .section-title { font-size: 1.25rem; color: var(--primary); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
-    .tab-content { display: none; } .tab-content.active { display: block; }
-    .vocab-list, .letter-grid { display: grid; gap: 15px; } .vocab-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } .letter-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-    .vocab-item, .letter-item { padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent); background: #f8f9fa; }
-    .term, .cyrillic {font-weight:bold; color: var(--russe);} .translation {color: var(--francais);}
-    .exercise { background: #fffbeb; border-left: 4px solid var(--warning); padding:15px; border-radius:8px;} .exercise-title {font-weight:bold; color:var(--warning);}
-    .note-box { background: #eef2ff; border-left: 4px solid var(--info); padding:15px; border-radius:8px;} .note-title {font-weight:bold; color:var(--info);}
-    .recap-list { background: #f0fdf4; border-left: 4px solid var(--success); padding:15px; border-radius:8px;} .recap-list ul {margin-left:20px;}
-    .dialogue-box { background: #f8fafc; border:1px solid #e2e8f0; padding:15px; border-radius:8px;} .speaker {font-weight:bold;} .russian{color:var(--russe);}
-</style>
+    </style>
 </head>
 <body>
-<header><div class="container"><h1>\${escapeHtml(pageTitle)}</h1></div></header>
-<nav><div class="nav-buttons">
-    <a href="index.html" class="nav-btn">🏠 Accueil</a><a href="alphabet.html" class="nav-btn">🔤 Alphabet</a><a href="vocabulaire.html" class="nav-btn">📚 Vocabulaire</a><a href="cours-21-jours.html" class="nav-btn active">📅 Programme 21 jours</a>
-</div></nav>
-<div class="container content-wrapper">
-    <nav class="sidebar-nav">\${sidebarHTML}</nav>
-    <main class="main-content">\${dayContentsHTML}</main>
-</div>
-<script>
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-        document.getElementById(tabId).style.display = 'block';
-        window.location.hash = tabId; // Update URL hash for better navigation
-    }
-    // Check for hash on load to open the correct tab
-    document.addEventListener('DOMContentLoaded', () => {
-        if(window.location.hash) {
-            openTab(window.location.hash.substring(1));
-        } else {
-            openTab('jour1');
+    <header><div class="container"><h1>${data.header.title}</h1></div></header>
+    <nav class="navigation">
+        <div class="container">
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn">🏠 Home</a>
+                <a href="alphabet.html" class="nav-btn">🔤 Alphabet</a>
+                <a href="vocabulary.html" class="nav-btn">📚 Vocabulary</a>
+                <a href="lessons.html" class="nav-btn active">📅 Lessons</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container content-wrapper">
+        <nav class="sidebar-nav">
+            <h3>${data.sidebarTitle}</h3>
+            <ul class="sidebar-day-list" id="sidebar-nav">
+                ${data.lessons.map((lesson, index) => `
+                <li><button class="sidebar-day-btn ${index === 0 ? 'active' : ''}" data-day="${index + 1}" onclick="openTab('day${index + 1}')">${lesson.title}</button></li>
+                `).join('')}
+            </ul>
+        </nav>
+        <main class="main-content" id="main-content">
+            ${data.lessons.map((lesson, index) => `
+            <div id="day${index + 1}" class="tab-content ${index === 0 ? 'active' : ''}">
+                <div class="card">
+                    <div class="card-header"><h2>${lesson.title}</h2></div>
+                    <div class="card-body">
+                        ${lesson.sections.map(section => `
+                        <div class="section mb-6">
+                            <h3 class="section-title">${section.title}</h3>
+                            <div class="text-gray-700 space-y-4">
+                                ${section.content.map(item => {
+                                    switch(item.type) {
+                                        case 'paragraph':
+                                            return `<p>${item.text}</p>`;
+                                        case 'vocab-list':
+                                            return `<div class="vocab-list">${item.items.map(v => `<div class="vocab-item"><span class="term">${v.term}</span>: <span class="translation-color">${v.translation}</span></div>`).join('')}</div>`;
+                                        case 'dialogue':
+                                            return `<div class="dialogue-box">${item.lines.map(l => `<div class="dialogue-line"><span class="speaker">${l.speaker}:</span> <span class="language-text">${l.text}</span><br><span class="translation-text">${l.translation}</span></div>`).join('')}</div>`;
+                                        case 'note':
+                                            return `<div class="note-box">${item.text}</div>`;
+                                        default:
+                                            return '';
+                                    }
+                                }).join('')}
+                            </div>
+                        </div>`).join('')}
+                    </div>
+                </div>
+            </div>`).join('')}
+        </main>
+    </div>
+    <script>
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            document.querySelectorAll('.sidebar-day-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.sidebar-day-btn[data-day="' + tabName.replace('day', '') + '"]').classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
-    });
-</script>
-</body></html>\`;
-        downloadFile('cours-21-jours.html', html);
-    }
-</script>
+    </script>
+</body>
+</html>`;
 
+    // --- EXAMPLE DATA ---
+    const examples = {
+        mainData: `{
+  "lang": "en",
+  "title": "Learn MyLanguage - Complete Guide",
+  "header": {
+    "title": "Learn MyLanguage",
+    "subtitle": "Your complete guide to mastering the MyLanguage language"
+  },
+  "welcome": {
+    "title": "Welcome to your MyLanguage adventure!",
+    "text": "Discover the richness of the MyLanguage language through our progressive and interactive method. From the alphabet to common conversations, we will guide you at every step of your learning journey."
+  },
+  "features": [
+    { "icon": "🔤", "title": "Alphabet", "description": "Master the letters of the MyLanguage alphabet with our interactive guide.", "link": "alphabet.html", "buttonText": "Start" },
+    { "icon": "📚", "title": "Essential Vocabulary", "description": "Over 300 words categorized by theme with pronunciation and translation.", "link": "vocabulary.html", "buttonText": "Explore" },
+    { "icon": "📅", "title": "Lessons Program", "description": "A structured path to acquire the basics in a few weeks.", "link": "lessons.html", "buttonText": "Discover" }
+  ],
+  "footer": {
+    "text": "&copy; 2024 Learn MyLanguage - Created by You!"
+  }
+}`,
+        alphabetData: `{
+    "lang": "en",
+    "title": "The MyLanguage Alphabet",
+    "pageTitle": "The MyLanguage Alphabet",
+    "pageSubtitle": "A simple guide to learning the script",
+    "categories": {
+        "similar": "Similar Letters",
+        "trap": "Trap Letters",
+        "unique": "Unique Letters"
+    },
+    "letters": [
+        { "upper": "A", "lower": "a", "pronunciation": "[a]", "example": "like in 'father'", "category": "similar", "categoryColor": "#38a169", "words": [{ "word": "ana", "pronunciation": "[ana]", "translation": "apple"}] },
+        { "upper": "B", "lower": "b", "pronunciation": "[v]", "example": "like in 'vine' (looks like latin B)", "category": "trap", "categoryColor": "#e53e3e" },
+        { "upper": "Б", "lower": "б", "pronunciation": "[b]", "example": "like in 'bat'", "category": "unique", "categoryColor": "#d69e2e" }
+    ],
+    "footerText": "Guide to learning the MyLanguage alphabet."
+}`,
+        vocabularyData: `{
+    "lang": "en",
+    "title": "MyLanguage Vocabulary",
+    "header": { "title": "MyLanguage Vocabulary" },
+    "categories": {
+        "greetings": "Greetings",
+        "food": "Food",
+        "travel": "Travel"
+    },
+    "words": [
+        { "term": "Privet", "pronunciation": "pree-vyet", "translation": "Hello (informal)", "categories": ["greetings"] },
+        { "term": "Yabloko", "pronunciation": "yab-lo-ko", "translation": "Apple", "categories": ["food"] },
+        { "term": "Poyezd", "pronunciation": "po-yezd", "translation": "Train", "categories": ["travel"], "nuance": "Refers to a long-distance train." }
+    ]
+}`,
+        lessonsData: `{
+    "lang": "en",
+    "title": "MyLanguage Lessons",
+    "header": { "title": "MyLanguage Lessons Program" },
+    "sidebarTitle": "Lesson Plan",
+    "lessons": [
+        {
+            "title": "Day 1: First Steps",
+            "sections": [
+                {
+                    "title": "Objective of the Day",
+                    "content": [{ "type": "paragraph", "text": "Learn the first 5 letters and basic greetings." }]
+                },
+                {
+                    "title": "Vocabulary",
+                    "content": [
+                        { "type": "vocab-list", "items": [
+                            { "term": "Zdrast", "translation": "Hello (formal)" },
+                            { "term": "Poka", "translation": "Bye" }
+                        ]}
+                    ]
+                },
+                {
+                    "title": "Dialogue Practice",
+                    "content": [
+                        { "type": "dialogue", "lines": [
+                            { "speaker": "A", "text": "Zdrast!", "translation": "Hello!" },
+                            { "speaker": "B", "text": "Zdrast!", "translation": "Hello!" }
+                        ]}
+                    ]
+                }
+            ]
+        }
+    ]
+}`
+    };
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Pre-fill textareas with example data
+        document.getElementById('mainData').value = examples.mainData.trim();
+        document.getElementById('alphabetData').value = examples.alphabetData.trim();
+        document.getElementById('vocabularyData').value = examples.vocabularyData.trim();
+        document.getElementById('lessonsData').value = examples.lessonsData.trim();
+    });
+
+
+    function generateWebsite() {
+        const outputDiv = document.getElementById('output');
+        const errorDiv = document.getElementById('error');
+        outputDiv.innerHTML = '';
+        errorDiv.innerHTML = '';
+
+        try {
+            // Parse data from textareas
+            const mainData = JSON.parse(document.getElementById('mainData').value);
+            const alphabetData = JSON.parse(document.getElementById('alphabetData').value);
+            const vocabularyData = JSON.parse(document.getElementById('vocabularyData').value);
+            const lessonsData = JSON.parse(document.getElementById('lessonsData').value);
+
+            // Generate HTML content from templates
+            const files = {
+                'index.html': mainTemplate(mainData),
+                'alphabet.html': alphabetTemplate(alphabetData),
+                'vocabulary.html': vocabularyTemplate(vocabularyData),
+                'lessons.html': lessonsTemplate(lessonsData)
+            };
+
+            // Create and display download links
+            for (const [filename, content] of Object.entries(files)) {
+                const blob = new Blob([content], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                a.textContent = `Download ${filename}`;
+                a.className = 'generated-link mx-2 my-2';
+                outputDiv.appendChild(a);
+            }
+
+        } catch (e) {
+            console.error(e);
+            errorDiv.textContent = 'Error: Could not generate files. Please ensure your data is in the correct JSON format in all four text boxes. Error details: ' + e.message;
+        }
+    }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-800 to-indigo-700 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Language Learning Website Generator</h1>
+            <p class="text-lg md:text-xl text-blue-200">Create a beautiful, four-page language learning website instantly. Just provide your data!</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Instructions Section -->
+        <section id="instructions" class="bg-white p-8 rounded-xl shadow-md mb-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 border-b-2 border-blue-200 pb-4">How It Works</h2>
+            <p class="mb-4 text-gray-600">This tool generates a complete website from the data you provide. Below are four text boxes, one for each page of your future website. They are pre-filled with example data to show you the required format.</p>
+            <p class="mb-6">Simply edit the content in the text boxes with your own language data, making sure to keep the same JSON structure. When you're ready, click the "Generate" button at the bottom.</p>
+        </section>
+
+        <!-- Data Input Section -->
+        <section id="data-input" class="space-y-10">
+            <!-- Main Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">1. Main Page Data (index.html)</h3>
+                <p class="mb-4 text-gray-600">Provide general information about the language and an overview of the learning program.</p>
+                <textarea id="mainData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Alphabet Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">2. Alphabet Page Data (alphabet.html)</h3>
+                 <p class="mb-4 text-gray-600">Provide the letters of the alphabet, including pronunciation, examples, and categories.</p>
+                <textarea id="alphabetData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Vocabulary Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">3. Vocabulary Page Data (vocabulary.html)</h3>
+                <p class="mb-4 text-gray-600">Provide vocabulary words with pronunciation, translation, categories, and optional nuances.</p>
+                <textarea id="vocabularyData" class="textarea-input"></textarea>
+            </div>
+
+            <!-- Lessons Page Data -->
+            <div class="bg-white p-8 rounded-xl shadow-md">
+                <h3 class="text-2xl font-bold text-gray-700 mb-4">4. Lessons Page Data (lessons.html)</h3>
+                 <p class="mb-4 text-gray-600">Provide the content for your structured lessons (e.g., a 21-day program).</p>
+                <textarea id="lessonsData" class="textarea-input"></textarea>
+            </div>
+        </section>
+
+        <!-- Generation Button and Output -->
+        <section id="generation" class="text-center py-12">
+            <button onclick="generateWebsite()" class="bg-blue-600 text-white text-2xl font-bold py-4 px-10 rounded-xl hover:bg-blue-700 transition-transform transform hover:scale-105 shadow-lg">
+                🚀 Generate My Website!
+            </button>
+            <div id="output" class="mt-10 flex flex-wrap justify-center gap-4"></div>
+            <div id="error" class="mt-6 text-red-600 font-semibold"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p>&copy; 2024 Language Learning Website Generator. Created with Gemini.</p>
+        </div>
+    </footer>
 </body>
 </html>
-```</immersive>
